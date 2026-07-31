@@ -1,0 +1,4 @@
+Copyright (c) 2026 Amelia Simpson. All rights reserved.
+
+This is a product in development, not open-source software. No license
+is granted to copy, modify, or redistribute this code or its design.
