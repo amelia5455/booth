@@ -1066,21 +1066,23 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
       <!-- 2 · code -->
       <section class="screen" id="ob-s-code" aria-hidden="true">
         <h1>Check your texts.</h1>
-        <span class="obsub">verify · 4 digits</span>
+        <span class="obsub">verify · 6 digits</span>
         <p class="obnote">Sent to <span id="ob-sentto">+1</span>.
           <button class="swap" id="ob-wrongnum">Wrong number?</button></p>
         <div style="height:14px"></div>
         <div class="codes" id="ob-codes">
-          <input type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="4" aria-label="Digit 1 of 4">
-          <input type="text" inputmode="numeric" maxlength="4" aria-label="Digit 2 of 4">
-          <input type="text" inputmode="numeric" maxlength="4" aria-label="Digit 3 of 4">
-          <input type="text" inputmode="numeric" maxlength="4" aria-label="Digit 4 of 4">
+          <input type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" aria-label="Digit 1 of 6">
+          <input type="text" inputmode="numeric" maxlength="6" aria-label="Digit 2 of 6">
+          <input type="text" inputmode="numeric" maxlength="6" aria-label="Digit 3 of 6">
+          <input type="text" inputmode="numeric" maxlength="6" aria-label="Digit 4 of 6">
+          <input type="text" inputmode="numeric" maxlength="6" aria-label="Digit 5 of 6">
+          <input type="text" inputmode="numeric" maxlength="6" aria-label="Digit 6 of 6">
         </div>
         <p class="oberr" id="ob-codeerr" role="alert" aria-live="assertive"></p>
         <p class="resend">code expires in <span id="ob-exp-t">5:00</span></p>
         <p class="resend">didn't get it? <button id="ob-resend" disabled>resend <span id="ob-rs-t">0:24</span></button></p>
         <div class="spacer"></div>
-        <p class="fhint demo">prototype · 0000 is wrong · 1111 expires the code instantly · anything else works</p>
+        <p class="fhint demo">prototype · 000000 is wrong · 111111 expires the code instantly · anything else works</p>
         <button class="obgo" id="ob-go-code" disabled>Verify</button>
       </section>
 
@@ -4157,11 +4159,11 @@ function who(by){
       var d=b.value.replace(/\D/g,'');
       if(!d){b.value='';syncCode();return;}
       if(d.length>1){ // paste
-        d.slice(0,4-i).split('').forEach(function(ch,j){boxes[i+j].value=ch;});
-        boxes[Math.min(i+d.length,3)].focus();
+        d.slice(0,6-i).split('').forEach(function(ch,j){boxes[i+j].value=ch;});
+        boxes[Math.min(i+d.length,5)].focus();
       }else{
         b.value=d;
-        if(i<3)boxes[i+1].focus();
+        if(i<5)boxes[i+1].focus();
       }
       syncCode();
     });
@@ -4177,10 +4179,10 @@ function who(by){
   goCode.addEventListener('click',function(){
     if(locked)return;
     var code=boxes.map(function(b){return b.value;}).join('');
-    if(DEMO && code==='0000'){failCode();return;}
+    if(DEMO && code==='000000'){failCode();return;}
     /* expired is not wrong: the user did nothing bad, so it costs no
        attempt — the fix is a fresh code, so resend unlocks now */
-    if(DEMO && code==='1111'){
+    if(DEMO && code==='111111'){
       stopExpiry();
       expireCode();
       return;

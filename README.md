@@ -20,8 +20,8 @@ With it on, the flows can be walked deterministically:
 | Trigger | Where | What it shows |
 | --- | --- | --- |
 | number ending `0000` | phone step | SMS delivery failure |
-| code `0000` | code step | wrong code → 3-strike lockout |
-| code `1111` | code step | instant code expiry (same state the 5:00 clock reaches) |
+| code `000000` | code step | wrong code → 3-strike lockout |
+| code `111111` | code step | instant code expiry (same state the 5:00 clock reaches) |
 | name `ren` | name step | taken display name + suggestions |
 | name `offline` | name step | availability check network failure |
 | shift-tap "Use my location" | location step | the "Not here yet" uncovered-city state |
