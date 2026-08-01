@@ -474,8 +474,9 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
   border:1px solid var(--line);display:grid;place-items:center;color:var(--ink);}
 .post-av svg{height:22px;width:auto;display:block;}
 .post-who{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;}
-.post-by{font-size:10px;font-weight:500;letter-spacing:.13em;text-transform:uppercase;color:var(--ink);}
-.post-at{font-family:var(--mono);font-size:11px;line-height:1.3;text-align:left;
+.post-by{font-size:13px;font-weight:500;color:var(--ink);}
+.post-at{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;
+  margin-top:3px;line-height:1.3;text-align:left;
   background:none;border:0;padding:0;color:var(--ink-soft);cursor:pointer;
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .post-at:hover{color:var(--ink);}
@@ -542,14 +543,15 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
 .act:focus-visible{outline:2px solid var(--ink);outline-offset:2px;border-radius:8px;}
 
 .post-likes{padding:6px 22px 0;font-size:12px;font-weight:500;color:var(--ink);}
-.post-cap{padding:5px 22px 0;font-family:var(--mono);font-size:12px;line-height:1.55;
+.post-cap{padding:4px 22px 0;font-family:var(--mono);font-size:12px;line-height:1.55;
   color:var(--ink);margin:0;}
 /* IG rule: username and caption share size, case, and color — weight
    500 vs 400 is the only contrast, separated by a real word-space */
 .post-cap b{font-weight:500;}
-.post-when{padding:9px 22px 0;font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);}
+.post-when{padding:12px 22px 0;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);}
 
-.post-cmts{padding:6px 22px 0;}
+.post-cmts{padding:12px 22px 0;}
+.post-cmts+.post-when{padding-top:4px;}
 .post-cmt-more{background:none;border:0;padding:9px 0 0;cursor:pointer;font-family:var(--mono);
   font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);}
 .post-cmt-more:hover{color:var(--ink);}
