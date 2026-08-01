@@ -101,7 +101,7 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
 
 /* ── FILTERS ───────────────────────────────────────────── */
 .top{position:absolute;top:0;left:0;right:0;z-index:600;
-  padding:var(--top-pad) var(--side-pad) 26px;
+  padding:calc(var(--top-pad) + 64px) var(--side-pad) 26px;
   background:linear-gradient(var(--ground) 40%,rgba(231,232,220,0));pointer-events:none;}
 .citybtn{pointer-events:auto;display:inline-flex;align-items:center;gap:8px;
   margin-bottom:12px;padding:8px 16px 9px;border-radius:100px;cursor:pointer;
