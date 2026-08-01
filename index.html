@@ -398,6 +398,15 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
 #settings .rowbtn:focus-visible{outline:2px solid var(--ink);outline-offset:2px;border-radius:4px;}
 #settings .vfoot{margin:24px 0 0;text-align:center;font-family:var(--mono);font-size:9px;
   letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);}
+#settings .brow{display:flex;align-items:center;justify-content:space-between;gap:12px;
+  margin-top:8px;}
+#settings .brow .bn{font-family:var(--mono);font-size:13px;color:var(--ink);}
+
+/* report / block sheet rides above the panels, like settings */
+#reportsheet{z-index:800;}
+#reportsheet .replist{margin-top:12px;}
+#reportsheet .repnote{margin:16px 0 8px;font-family:var(--mono);font-size:12px;
+  line-height:1.55;color:var(--ink);}
 #settings .avail{display:block;margin-top:8px;font-family:var(--mono);font-size:11px;
   color:var(--ink-soft);min-height:15px;}
 #settings .avail.bad{color:var(--err);}
@@ -1035,6 +1044,11 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
           <div class="d">name, saves, and strips as a file</div></div>
         <button class="rowbtn" id="set-export">Download</button>
       </div>
+      <div class="setrow">
+        <div style="flex:1"><div class="t">Blocked</div>
+          <div class="d" id="set-blocked-hint">no one yet</div>
+          <div id="set-blocked"></div></div>
+      </div>
     </div>
 
     <button class="go go-ghost" id="set-logout" style="margin-top:24px">Log out</button>
@@ -1047,6 +1061,35 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
       </div>
     </div>
     <p class="vfoot">booth 0.1 · seattle first</p>
+  </section>
+
+  <!-- report a strip / block a person -->
+  <div class="scrim" id="report-scrim"></div>
+  <section class="sheet" id="reportsheet" aria-hidden="true" role="dialog" aria-label="Report">
+    <div class="grab"></div>
+    <div id="rep-pick">
+      <div class="sheet-head">
+        <div><h2>Report</h2><span class="hood">it stays anonymous</span></div>
+      </div>
+      <div class="replist" id="rep-reasons"></div>
+    </div>
+    <div id="rep-done" hidden>
+      <div class="sheet-head">
+        <div><h2>Thanks.</h2><span class="hood">we’ll take a look</span></div>
+      </div>
+      <p class="repnote">That strip is hidden from your feed while we do.</p>
+      <button class="go" id="rep-close">Done</button>
+    </div>
+    <div id="rep-block" hidden>
+      <div class="sheet-head">
+        <div><h2 id="rep-block-t">Block?</h2><span class="hood">they won’t know</span></div>
+      </div>
+      <p class="repnote">You won’t see their strips or comments anywhere.</p>
+      <div class="srow">
+        <button class="go go-ghost" id="rep-block-no">Cancel</button>
+        <button class="go" id="rep-block-yes">Block</button>
+      </div>
+    </div>
   </section>
 
   <!-- post a strip -->
@@ -3313,7 +3356,8 @@ function stripCard(s, showWho){
           <button role="menuitem" data-goto="${s.booth.id}">View booth</button>
           ${mine
             ? `<button role="menuitem" class="danger" data-del="${key}">Delete post</button>`
-            : `<button role="menuitem" data-report="${key}">Report</button>`}
+            : `<button role="menuitem" data-report="${key}">Report</button>
+               <button role="menuitem" data-block="${esc(s.by)}">Block ${esc(who(s.by))}</button>`}
         </div>
       </span>
     </header>
@@ -3496,19 +3540,84 @@ document.body.addEventListener('click', e=>{
   }
 
   const rep = e.target.closest('[data-report]');
-  if(rep){
-    rep.textContent = 'Reported';
-    rep.disabled = true;
-    setTimeout(closeMenus, 700);
-    return;
-  }
+  if(rep){ openReport(rep.dataset.report); return; }
+
+  const blk = e.target.closest('[data-block]');
+  if(blk){ openBlock(blk.dataset.block); return; }
 
   if(!e.target.closest('.post-menu')) closeMenus();
 }, true);
-document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeMenus(); });
+document.addEventListener('keydown', e=>{ if(e.key==='Escape'){ closeMenus(); closeReport(); } });
+
+
+/* ================================================================
+   REPORT + BLOCK — the feed's exits. Reporting hides the strip
+   for you and (server-era) flags it for review; blocking removes
+   a person from your feed and comments without telling them.
+   In-memory, like saves. Both are App Store table stakes for UGC.
+   ================================================================ */
+var reported = new Set(), blocked = new Set();
+const REASONS = [
+  'It’s not from a photobooth',
+  'Someone in it didn’t agree to be posted',
+  'It’s spam or an ad',
+  'It’s hateful or explicit',
+  'Something else'
+];
+let repKey = null, blockWho = null;
+
+function repState(state){
+  document.getElementById('rep-pick').hidden  = state !== 'pick';
+  document.getElementById('rep-done').hidden  = state !== 'done';
+  document.getElementById('rep-block').hidden = state !== 'block';
+}
+function openReport(key){
+  closeMenus();
+  repKey = key;
+  document.getElementById('rep-reasons').innerHTML = REASONS.map((r,i)=>
+    `<button type="button" class="cityrow" data-reason="${i}"><span class="n">${r}</span></button>`).join('');
+  repState('pick');
+  document.getElementById('reportsheet').classList.add('open');
+  document.getElementById('report-scrim').classList.add('open');
+  document.getElementById('reportsheet').setAttribute('aria-hidden','false');
+}
+function openBlock(by){
+  closeMenus();
+  blockWho = by;
+  document.getElementById('rep-block-t').textContent = `Block ${who(by)}?`;
+  repState('block');
+  document.getElementById('reportsheet').classList.add('open');
+  document.getElementById('report-scrim').classList.add('open');
+  document.getElementById('reportsheet').setAttribute('aria-hidden','false');
+}
+function closeReport(){
+  document.getElementById('reportsheet').classList.remove('open');
+  document.getElementById('report-scrim').classList.remove('open');
+  document.getElementById('reportsheet').setAttribute('aria-hidden','true');
+}
+document.getElementById('reportsheet').addEventListener('click', e=>{
+  const r = e.target.closest('[data-reason]');
+  if(r){
+    /* the reason itself matters server-side; here the act is the point */
+    reported.add(repKey);
+    drawSocial();
+    repState('done');
+  }
+});
+document.getElementById('rep-close').addEventListener('click', closeReport);
+document.getElementById('rep-block-no').addEventListener('click', closeReport);
+document.getElementById('rep-block-yes').addEventListener('click', ()=>{
+  blocked.add(blockWho);
+  drawSocial();
+  closeReport();
+  toast(`Blocked ${who(blockWho)}.`);
+});
+document.getElementById('report-scrim').addEventListener('click', closeReport);
 
 function drawSocial(){
-  const all = allStrips();
+  /* the feed you shaped: reported strips and blocked people stay out */
+  const all = allStrips().filter(s =>
+    !blocked.has(s.by) && !reported.has(`${s.booth.id}:${s.i}`));
   document.getElementById('social-body').innerHTML = all.length
     ? all.map(s=>stripCard(s,true)).join('')
     : `<div class="empty tall">${stripGlyph()}<p>Nobody has posted a strip yet.</p>
@@ -3560,10 +3669,12 @@ function closeComments(){
 function drawComments(){
   const s = strip(cmtKey);
   if(!s) return;
-  const n = s.comments.length;
+  /* keep original indices for like targets while blocked voices sit out */
+  const vis = s.comments.map((c,i)=>({c,i})).filter(x=>!blocked.has(x.c.by));
+  const n = vis.length;
   document.getElementById('cmt-count').textContent = n ? `${n}` : '';
   document.getElementById('cmt-list').innerHTML = n
-    ? s.comments.map((c,i)=>`
+    ? vis.map(({c,i})=>`
       <div class="cmt-item">
         <span class="post-av${c.by==='you' ? ' me' : ''}"><svg viewBox="6.4 2.4 36.5 49"><use href="#booth-shape" x="2" y="2" width="48" height="52"/></svg></span>
         <span class="cmt-body">
@@ -4602,7 +4713,7 @@ function who(by){
     avail.textContent=''; avail.classList.remove('bad');
     $('set-phone').textContent=window.__mePhone||'+1 (206) 555-0134';
     $('set-delconfirm').hidden=true; $('set-del').hidden=false;
-    drawSws();
+    drawSws(); renderBlocked();
     sheet.classList.add('open'); scrim.classList.add('open');
     sheet.setAttribute('aria-hidden','false');
   }
@@ -4684,7 +4795,22 @@ function who(by){
   sheet.addEventListener('click',function(e){
     var t=e.target.closest('.tgl');
     if(t)t.setAttribute('aria-checked',String(t.getAttribute('aria-checked')!=='true'));
+    var u=e.target.closest('[data-unblock]');
+    if(u){
+      blocked.delete(u.dataset.unblock);
+      renderBlocked(); drawSocial();
+    }
   });
+
+  /* the block list lives where privacy lives; unblocking is one tap */
+  function renderBlocked(){
+    var names=(typeof blocked!=='undefined')?Array.from(blocked):[];
+    $('set-blocked-hint').style.display=names.length?'none':'';
+    $('set-blocked').innerHTML=names.map(function(n){
+      return '<div class="brow"><span class="bn">'+esc(who(n))+'</span>'+
+        '<button class="rowbtn" data-unblock="'+esc(n)+'">Unblock</button></div>';
+    }).join('');
+  }
 
   /* your data, actually downloadable: everything the prototype holds
      about you, minus the photos themselves (those stay on the phone) */
