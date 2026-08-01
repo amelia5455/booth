@@ -3321,6 +3321,29 @@ function stripGlyph(){
       <rect x="13" y="34" width="18" height="12" rx="1.4"/>
     </g></svg></div>`;
 }
+/* DEMO: ren seeds the feed. Social, report, and block all need a
+   second person to exist before the backend does, and ren is that
+   person (the same ren who owns the taken display name). The strip
+   images are drawn placeholders in the app's own hand, not fake
+   photos. Gone when DEMO flips off. */
+if(DEMO){
+  const seedStrip = (a,b,c) => {
+    const f = (y,fill) =>
+      `<rect x="120" y="${y}" width="120" height="120" rx="3" fill="${fill}" stroke="#1B1A16" stroke-width="5"/>`;
+    return 'data:image/svg+xml,'+encodeURIComponent(
+      `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 480">`+
+      `<rect width="360" height="480" fill="#E7E8DC"/>`+
+      `<rect x="104" y="28" width="152" height="424" fill="#F3F3EA" stroke="#1B1A16" stroke-width="6"/>`+
+      f(48,a)+f(180,b)+f(312,c)+`</svg>`);
+  };
+  const seed = (idx,s) => { if(BOOTHS[idx]) BOOTHS[idx].strips.push(s); };
+  seed(0,{src:seedStrip('#D9C9B8','#C9B79F','#B8A68E'), date:'Jul 29', by:'ren',
+    caption:'the fremont classic still hits', likes:3,
+    comments:[{by:'ren', text:'four takes, no blinks'}]});
+  seed(1,{src:seedStrip('#CFC4B0','#BFB49E','#ABA08B'), date:'Jul 30', by:'ren',
+    caption:'pre show ritual', likes:1, comments:[]});
+}
+
 function allStrips(){
   return BOOTHS.flatMap(b => b.strips.map((s,i) => ({...s, booth:b, i})));
 }
