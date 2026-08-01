@@ -191,7 +191,15 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
 .fab:focus-visible{outline:2px solid var(--ink);outline-offset:3px;}
 
 #addbooth{z-index:800;}
-#addbooth .ab-src{width:100%;}
+#addbooth .ab-doneart{width:64px;height:64px;border-radius:50%;margin:14px auto 0;
+  background:var(--ground);border:1px solid var(--line);
+  display:grid;place-items:center;color:var(--me-deep);}
+#addbooth .ab-doneart svg{height:40px;width:auto;display:block;}
+#addbooth .ab-doneh{font-family:var(--serif);font-weight:400;font-size:26px;
+  letter-spacing:-.01em;text-align:center;margin:14px 0 0;}
+#addbooth .ab-donenote{font-family:var(--mono);font-size:12px;line-height:1.55;
+  color:var(--ink-soft);text-align:center;margin:8px 16px 4px;}
+#addbooth #ab-done .go{margin-top:16px;}
 #addbooth .ab-src.ok{border-style:solid;border-color:var(--ink);color:var(--ink);}
 #addbooth .go:disabled{background:var(--stone);cursor:default;}
 .compose{position:absolute;left:8px;right:8px;z-index:790;
@@ -1145,27 +1153,42 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
   <div class="scrim" id="addbooth-scrim"></div>
   <section class="sheet" id="addbooth" aria-hidden="true" role="dialog" aria-label="Add a booth">
     <div class="grab"></div>
-    <div class="sheet-head">
-      <div><h2>Add a booth</h2><span class="hood">spotted one we're missing?</span></div>
+    <div id="ab-form">
+      <div class="sheet-head">
+        <div><h2>Add a booth</h2><span class="hood">spotted one we're missing?</span></div>
+      </div>
+      <label class="field" style="margin-top:14px;margin-bottom:0">
+        <span class="flabel">What is it</span>
+        <input type="text" id="ab-name" maxlength="60" placeholder="bar, arcade, corner store…"
+               autocomplete="off" autocapitalize="off" spellcheck="false">
+      </label>
+      <label class="field" style="margin-top:14px;margin-bottom:0">
+        <span class="flabel">Location</span>
+        <input type="text" id="ab-loc" maxlength="80" placeholder="place and street, as close as you know"
+               autocomplete="off" spellcheck="false">
+      </label>
+      <span class="flabel" style="display:block;margin-top:14px">Photo <em>proof it exists</em></span>
+      <input type="file" id="ab-file-cam" accept="image/*" capture="environment" hidden>
+      <input type="file" id="ab-file-roll" accept="image/*" hidden>
+      <div class="src-row">
+        <button class="src ab-src" id="ab-snap" type="button">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 8.2h3l1.6-2.4h5.8l1.6 2.4h3v10.3h-15z"/><circle cx="12" cy="13" r="3.2"/></svg>
+          <span id="ab-snap-t">Snap it now</span>
+        </button>
+        <button class="src ab-src" id="ab-roll" type="button">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4.5" y="6.5" width="15" height="12" rx="1.6"/><circle cx="9.2" cy="10.6" r="1.4"/><path d="M4.5 16l4-3.4 3 2.5 3.6-3.1 4.4 4"/></svg>
+          <span id="ab-roll-t">Camera roll</span>
+        </button>
+      </div>
+      <p class="fhint">the photo verifies the booth · it never posts to the feed</p>
+      <button class="go" id="ab-submit" disabled>Submit for review</button>
     </div>
-    <label class="field" style="margin-top:14px;margin-bottom:0">
-      <span class="flabel">Where is it</span>
-      <input type="text" id="ab-name" maxlength="60" placeholder="bar, arcade, corner store…"
-             autocomplete="off" autocapitalize="off" spellcheck="false">
-    </label>
-    <span class="flabel" style="display:block;margin-top:14px">Location <em>logged in person</em></span>
-    <button class="src ab-src" id="ab-loc" type="button">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-5.4-6.5-10.3A6.5 6.5 0 0 1 12 4a6.5 6.5 0 0 1 6.5 6.7C18.5 15.6 12 21 12 21z"/><circle cx="12" cy="10.6" r="2.3"/></svg>
-      <span id="ab-loc-t">Log my location</span>
-    </button>
-    <span class="flabel" style="display:block;margin-top:14px">Photo <em>proof it exists</em></span>
-    <input type="file" id="ab-file" accept="image/*" capture="environment" hidden>
-    <button class="src ab-src" id="ab-snap" type="button">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 8.2h3l1.6-2.4h5.8l1.6 2.4h3v10.3h-15z"/><circle cx="12" cy="13" r="3.2"/></svg>
-      <span id="ab-snap-t">Snap the booth</span>
-    </button>
-    <p class="fhint">the photo verifies the booth · it never posts to the feed</p>
-    <button class="go" id="ab-submit" disabled>Submit for review</button>
+    <div id="ab-done" hidden>
+      <div class="ab-doneart" aria-hidden="true"><svg viewBox="6.4 2.4 36.5 49"><use href="#booth-shape" x="2" y="2" width="48" height="52"/></svg></div>
+      <h2 class="ab-doneh">What a find.</h2>
+      <p class="ab-donenote">We'll go take a look. Once it checks out, it goes on the map for everyone to see.</p>
+      <button class="go" id="ab-done-btn">Done</button>
+    </div>
   </section>
 
   <!-- post a strip -->
@@ -4952,15 +4975,17 @@ function who(by){
 
 
 /* ══ ADD A BOOTH — a field-verified request. Submitting takes a
-   live location fix and a photo: proof you're standing at a real
-   machine. Requests queue for review; nothing goes on the map
-   unmoderated. ══ */
+   named location and a photo of the machine: proof it exists.
+   Requests queue for review; nothing goes on the map unmoderated.
+   The thank-you is warm on purpose: someone just did the product
+   a favor in the field. ══ */
 (function(){
   var $=function(id){return document.getElementById(id);};
-  var lat=null, lng=null, photo=false;
+  var photo=false;
   var sheet=$('addbooth'), scrim=$('addbooth-scrim');
-  function sync(){ $('ab-submit').disabled = !(lat!==null && photo); }
+  function sync(){ $('ab-submit').disabled = !($('ab-loc').value.trim().length>1 && photo); }
   function openAB(){
+    $('ab-form').hidden=false; $('ab-done').hidden=true;
     sheet.classList.add('open'); scrim.classList.add('open');
     sheet.setAttribute('aria-hidden','false');
   }
@@ -4969,47 +4994,44 @@ function who(by){
     sheet.setAttribute('aria-hidden','true');
   }
   function resetAB(){
-    lat=null; lng=null; photo=false;
-    $('ab-name').value='';
-    $('ab-loc-t').textContent='Log my location';
-    $('ab-snap-t').textContent='Snap the booth';
-    $('ab-loc').classList.remove('ok'); $('ab-snap').classList.remove('ok');
+    photo=false;
+    $('ab-name').value=''; $('ab-loc').value='';
+    $('ab-snap-t').textContent='Snap it now';
+    $('ab-roll-t').textContent='Camera roll';
+    $('ab-snap').classList.remove('ok'); $('ab-roll').classList.remove('ok');
     sync();
   }
   $('ab-open').addEventListener('click', openAB);
   scrim.addEventListener('click', closeAB);
   document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeAB(); });
 
-  $('ab-loc').addEventListener('click', function(){
-    $('ab-loc-t').textContent='Getting a fix…';
-    if(!navigator.geolocation){
-      $('ab-loc-t').textContent='No location here. Try on your phone.';
-      return;
-    }
-    navigator.geolocation.getCurrentPosition(function(pos){
-      lat=pos.coords.latitude; lng=pos.coords.longitude;
-      $('ab-loc-t').textContent='Pinned · '+lat.toFixed(4)+', '+lng.toFixed(4);
-      $('ab-loc').classList.add('ok');
-      sync();
-    }, function(){
-      $('ab-loc-t').textContent='Couldn\u2019t get a fix. Try again.';
-    }, {enableHighAccuracy:true, timeout:8000, maximumAge:30000});
-  });
+  $('ab-loc').addEventListener('input', sync);
 
-  $('ab-snap').addEventListener('click', function(){ $('ab-file').click(); });
-  $('ab-file').addEventListener('change', function(){
-    if(this.files && this.files.length){
-      photo=true;
-      $('ab-snap-t').textContent='Photo attached';
-      $('ab-snap').classList.add('ok');
-      sync();
-    }
-  });
+  var attach=function(btnId, labelId){
+    return function(){
+      if(this.files && this.files.length){
+        photo=true;
+        $(labelId).textContent='Photo attached';
+        $(btnId).classList.add('ok');
+        sync();
+      }
+    };
+  };
+  $('ab-snap').addEventListener('click', function(){ $('ab-file-cam').click(); });
+  $('ab-roll').addEventListener('click', function(){ $('ab-file-roll').click(); });
+  $('ab-file-cam').addEventListener('change', attach('ab-snap','ab-snap-t'));
+  $('ab-file-roll').addEventListener('change', attach('ab-roll','ab-roll-t'));
 
   $('ab-submit').addEventListener('click', function(){
     /* server-era: booth_submissions row + private photo upload */
-    toast('Sent. We\u2019ll take a look before it goes live.');
-    closeAB(); resetAB();
+    $('ab-form').hidden=true; $('ab-done').hidden=false;
+    var art=$('addbooth').querySelector('.ab-doneart');
+    var r=art.getBoundingClientRect(), sr=sheet.getBoundingClientRect();
+    heartCluster(sheet, r.left-sr.left+r.width/2, r.top-sr.top+r.height/2, {big:false});
+  });
+  $('ab-done-btn').addEventListener('click', function(){
+    closeAB();
+    setTimeout(resetAB, 400);
   });
 })();
 
