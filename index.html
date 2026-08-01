@@ -199,10 +199,10 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
 .field{display:block;margin-bottom:14px;}
 .flabel{display:block;font-size:9px;letter-spacing:.13em;text-transform:uppercase;
   color:var(--ink-soft);margin-bottom:8px;}
-.compose input[type="text"],#settings input[type="text"]{width:100%;font-family:var(--mono);font-size:16px;
+.compose input[type="text"],.setsheet input[type="text"]{width:100%;font-family:var(--mono);font-size:16px;
   color:var(--ink);background:transparent;border:1px solid var(--line);border-radius:11px;padding:11px 12px;}
-.compose input[type="text"]::placeholder,#settings input[type="text"]::placeholder{color:var(--ink-soft);}
-.compose input[type="text"]:focus-visible,#settings input[type="text"]:focus-visible{outline:2px solid var(--ink);outline-offset:1px;}
+.compose input[type="text"]::placeholder,.setsheet input[type="text"]::placeholder{color:var(--ink-soft);}
+.compose input[type="text"]:focus-visible,.setsheet input[type="text"]:focus-visible{outline:2px solid var(--ink);outline-offset:1px;}
 .flabel em{font-style:normal;opacity:.6;}
 .compose select{width:100%;font-family:var(--mono);font-size:16px;color:var(--ink);
   background:transparent;border:1px solid var(--line);border-radius:11px;
@@ -380,60 +380,60 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
 .gearbtn svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.5;
   stroke-linecap:round;stroke-linejoin:round;}
 .gearbtn:focus-visible{outline:2px solid var(--ink);outline-offset:2px;}
-#settings{z-index:800; /* above the You panel (750) and the scrim (785) */
+.setsheet{z-index:800; /* above the You panel (750) and the scrim (785) */
   max-height:80%;overflow-y:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
-#settings::-webkit-scrollbar{display:none;}
-#settings .setg{margin-top:24px;padding-top:16px;border-top:1px solid var(--line);}
-#settings .glabel{display:block;font-size:9px;letter-spacing:.14em;text-transform:uppercase;
+.setsheet::-webkit-scrollbar{display:none;}
+.setsheet .setg{margin-top:24px;padding-top:16px;border-top:1px solid var(--line);}
+.setsheet .glabel{display:block;font-size:9px;letter-spacing:.14em;text-transform:uppercase;
   color:var(--ink-soft);}
-#settings .setrow{display:flex;align-items:center;justify-content:space-between;gap:14px;
+.setsheet .setrow{display:flex;align-items:center;justify-content:space-between;gap:14px;
   padding:12px 0;}
-#settings .setrow+.setrow{border-top:1px solid var(--line);}
-#settings .setrow .t{font-family:var(--mono);font-size:13px;color:var(--ink);}
-#settings .setrow .d{font-family:var(--mono);font-size:11px;line-height:1.5;
+.setsheet .setrow+.setrow{border-top:1px solid var(--line);}
+.setsheet .setrow .t{font-family:var(--mono);font-size:13px;color:var(--ink);}
+.setsheet .setrow .d{font-family:var(--mono);font-size:11px;line-height:1.5;
   color:var(--ink-soft);margin-top:3px;}
-#settings .tgl{flex:0 0 auto;width:42px;height:26px;border-radius:100px;cursor:pointer;
+.setsheet .tgl{flex:0 0 auto;width:42px;height:26px;border-radius:100px;cursor:pointer;
   border:1px solid var(--line);background:var(--ground);position:relative;padding:0;
   transition:background .2s,border-color .2s;}
-#settings .tgl::after{content:'';position:absolute;top:2px;left:2px;width:20px;height:20px;
+.setsheet .tgl::after{content:'';position:absolute;top:2px;left:2px;width:20px;height:20px;
   box-sizing:border-box; /* the global border-box * rule skips pseudo-elements */
   border-radius:50%;background:var(--paper);border:1px solid var(--line);
   transition:transform .2s cubic-bezier(.2,.8,.2,1);}
-#settings .tgl[aria-checked="true"]{background:var(--ink);border-color:var(--ink);}
-#settings .tgl[aria-checked="true"]::after{transform:translateX(16px);}
-#settings .tgl:focus-visible{outline:2px solid var(--ink);outline-offset:2px;}
-#settings .rowbtn{flex:0 0 auto;background:none;border:0;padding:0;cursor:pointer;
+.setsheet .tgl[aria-checked="true"]{background:var(--ink);border-color:var(--ink);}
+.setsheet .tgl[aria-checked="true"]::after{transform:translateX(16px);}
+.setsheet .tgl:focus-visible{outline:2px solid var(--ink);outline-offset:2px;}
+.setsheet .rowbtn{flex:0 0 auto;background:none;border:0;padding:0;cursor:pointer;
   font-family:var(--mono);font-size:12px;color:var(--ink);
   text-decoration:underline;text-underline-offset:3px;}
-#settings .rowbtn:focus-visible{outline:2px solid var(--ink);outline-offset:2px;border-radius:4px;}
-#settings .vfoot{margin:24px 0 0;text-align:center;font-family:var(--mono);font-size:9px;
+.setsheet .rowbtn:focus-visible{outline:2px solid var(--ink);outline-offset:2px;border-radius:4px;}
+.setsheet .vfoot{margin:24px 0 0;text-align:center;font-family:var(--mono);font-size:9px;
   letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);}
-#settings .brow{display:flex;align-items:center;justify-content:space-between;gap:12px;
+.setsheet .brow{display:flex;align-items:center;justify-content:space-between;gap:12px;
   margin-top:8px;}
-#settings .brow .bn{font-family:var(--mono);font-size:13px;color:var(--ink);}
+.setsheet .brow .bn{font-family:var(--mono);font-size:13px;color:var(--ink);}
 
 /* report / block sheet rides above the panels, like settings */
 #reportsheet{z-index:800;}
 #reportsheet .replist{margin-top:12px;}
 #reportsheet .repnote{margin:16px 0 8px;font-family:var(--mono);font-size:12px;
   line-height:1.55;color:var(--ink);}
-#settings .avail{display:block;margin-top:8px;font-family:var(--mono);font-size:11px;
+.setsheet .avail{display:block;margin-top:8px;font-family:var(--mono);font-size:11px;
   color:var(--ink-soft);min-height:15px;}
-#settings .avail.bad{color:var(--err);}
-#settings .setsws{display:flex;gap:10px;margin-top:8px;}
-#settings .setsw{width:34px;height:34px;border-radius:50%;cursor:pointer;padding:0;
+.setsheet .avail.bad{color:var(--err);}
+.setsheet .setsws{display:flex;gap:10px;margin-top:8px;}
+.setsheet .setsw{width:34px;height:34px;border-radius:50%;cursor:pointer;padding:0;
   background:var(--c);border:1px solid var(--line);transition:box-shadow .15s;}
-#settings .setsw[aria-checked="true"]{box-shadow:0 0 0 2px var(--paper),0 0 0 3.5px var(--ink);}
-#settings .setsw:focus-visible{outline:2px solid var(--ink);outline-offset:3px;}
-#settings .setphone{margin-top:8px;font-family:var(--mono);font-size:13px;color:var(--ink);}
-#settings .delbtn{background:none;border:0;padding:0;margin-top:16px;cursor:pointer;
+.setsheet .setsw[aria-checked="true"]{box-shadow:0 0 0 2px var(--paper),0 0 0 3.5px var(--ink);}
+.setsheet .setsw:focus-visible{outline:2px solid var(--ink);outline-offset:3px;}
+.setsheet .setphone{margin-top:8px;font-family:var(--mono);font-size:13px;color:var(--ink);}
+.setsheet .delbtn{background:none;border:0;padding:0;margin-top:16px;cursor:pointer;
   font-family:var(--mono);font-size:12px;color:var(--err);
   text-decoration:underline;text-underline-offset:3px;}
-#settings .delbtn:focus-visible{outline:2px solid var(--err);outline-offset:2px;border-radius:4px;}
-#settings .delconfirm{margin-top:12px;}
-#settings .delconfirm p{margin:0 0 8px;font-family:var(--mono);font-size:12px;
+.setsheet .delbtn:focus-visible{outline:2px solid var(--err);outline-offset:2px;border-radius:4px;}
+.setsheet .delconfirm{margin-top:12px;}
+.setsheet .delconfirm p{margin:0 0 8px;font-family:var(--mono);font-size:12px;
   line-height:1.55;color:var(--ink);}
-#settings .delconfirm .go.del{background:var(--err);}
+.setsheet .delconfirm .go.del{background:var(--err);}
 
 .shead{display:flex;align-items:baseline;justify-content:space-between;gap:10px;
   margin-top:24px;padding-bottom:8px;border-bottom:1px solid var(--line);}
@@ -1008,7 +1008,7 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
 
   <!-- settings: the account, controllable -->
   <div class="scrim" id="settings-scrim"></div>
-  <section class="sheet" id="settings" aria-hidden="true" role="dialog" aria-label="Settings">
+  <section class="sheet setsheet" id="settings" aria-hidden="true" role="dialog" aria-label="Settings">
     <div class="grab"></div>
     <div class="sheet-head">
       <div><h2>Settings</h2><span class="hood">your account</span></div>
@@ -1016,17 +1016,7 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
 
     <div class="setg">
       <span class="glabel">Account</span>
-      <label class="field" style="margin-top:12px;margin-bottom:0">
-        <span class="flabel">Display name</span>
-        <input type="text" id="set-name" maxlength="24" autocomplete="off"
-               autocapitalize="off" spellcheck="false" aria-describedby="set-avail">
-      </label>
-      <span class="avail" id="set-avail" aria-live="polite"></span>
-
-      <span class="flabel" style="display:block;margin-top:16px">Booth color</span>
-      <div class="setsws" id="set-sws" role="radiogroup" aria-label="Booth color"></div>
-
-      <span class="flabel" style="display:block;margin-top:16px">Phone</span>
+      <span class="flabel" style="display:block;margin-top:12px">Phone</span>
       <div class="setphone" id="set-phone"></div>
       <p class="fhint">used to sign you in · never shown to anyone</p>
     </div>
@@ -1078,6 +1068,26 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
       </div>
     </div>
     <p class="vfoot">booth 0.1 · seattle first</p>
+  </section>
+
+  <!-- edit profile: the identity, from the pencil on the avatar -->
+  <section class="sheet setsheet" id="editprofile" aria-hidden="true" role="dialog" aria-label="Edit profile">
+    <div class="grab"></div>
+    <div class="sheet-head">
+      <div><h2>Edit profile</h2><span class="hood">shown on booths you save and strips you post</span></div>
+    </div>
+
+    <label class="field" style="margin-top:16px;margin-bottom:0">
+      <span class="flabel">Display name</span>
+      <input type="text" id="set-name" maxlength="24" autocomplete="off"
+             autocapitalize="off" spellcheck="false" aria-describedby="set-avail">
+    </label>
+    <span class="avail" id="set-avail" aria-live="polite"></span>
+
+    <span class="flabel" style="display:block;margin-top:16px">Booth color</span>
+    <div class="setsws" id="set-sws" role="radiogroup" aria-label="Booth color"></div>
+
+    <button class="go" id="edit-done" style="margin-top:24px">Done</button>
   </section>
 
   <!-- report a strip / block a person -->
@@ -4743,29 +4753,41 @@ function who(by){
   ];
   var TAKEN=['ren','amelia','booth'];
   var $=function(id){return document.getElementById(id);};
-  var sheet=$('settings'), scrim=$('settings-scrim');
+  var sheet=$('settings'), esheet=$('editprofile'), scrim=$('settings-scrim');
   var nameIn=$('set-name'), avail=$('set-avail'), sws=$('set-sws');
   var checkT, committed='', okValue=null;
 
-  function openS(){
+  function lift(el){
+    el.classList.add('open'); scrim.classList.add('open');
+    el.setAttribute('aria-hidden','false');
+  }
+  /* two doors, two rooms: the pencil edits who you are, the gear
+     holds everything else */
+  function openSettings(){
+    $('set-phone').textContent=window.__mePhone||'+1 (206) 555-0134';
+    $('set-delconfirm').hidden=true; $('set-del').hidden=false;
+    renderBlocked();
+    lift(sheet);
+  }
+  function openEdit(){
     committed=window.__meName||'Amelia';
     nameIn.value=committed; okValue=null;
     avail.textContent=''; avail.classList.remove('bad');
-    $('set-phone').textContent=window.__mePhone||'+1 (206) 555-0134';
-    $('set-delconfirm').hidden=true; $('set-del').hidden=false;
-    drawSws(); renderBlocked();
-    sheet.classList.add('open'); scrim.classList.add('open');
-    sheet.setAttribute('aria-hidden','false');
+    drawSws();
+    lift(esheet);
   }
   function closeS(){
-    sheet.classList.remove('open'); scrim.classList.remove('open');
-    sheet.setAttribute('aria-hidden','true');
+    [sheet,esheet].forEach(function(el){
+      el.classList.remove('open'); el.setAttribute('aria-hidden','true');
+    });
+    scrim.classList.remove('open');
   }
-  $('settings-open').addEventListener('click',openS);
-  $('profile-edit').addEventListener('click',openS); /* the pencil is the same door */
+  $('settings-open').addEventListener('click',openSettings);
+  $('profile-edit').addEventListener('click',openEdit);
+  $('edit-done').addEventListener('click',function(){nameIn.blur();closeS();});
   scrim.addEventListener('click',closeS);
   document.addEventListener('keydown',function(e){
-    if(e.key==='Escape'&&sheet.classList.contains('open'))closeS();
+    if(e.key==='Escape')closeS();
   });
 
   function drawSws(){
