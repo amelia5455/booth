@@ -41,9 +41,9 @@
   --safe-top: env(safe-area-inset-top, 0px);
   /* one header rhythm for every screen: map, panels, onboarding */
   --top-pad:  max(28px, calc(var(--safe-top) + 14px));
-  /* where tab screens start their content: fixed at the approved 92,
-     yielding only if a device's safe area actually reaches that deep */
-  --content-top: max(92px, calc(var(--safe-top) + 32px));
+  /* where tab screens start their content: tight to the safe area,
+     with a floor for desktop. Onboarding keeps its own header offset. */
+  --content-top: max(48px, calc(var(--safe-top) + 12px));
   --side-pad: 22px;
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
