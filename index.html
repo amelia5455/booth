@@ -354,6 +354,16 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
 .avatar{width:88px;height:88px;margin:0 auto 12px;border-radius:50%;background:var(--paper);
   border:1px solid var(--line);display:grid;place-items:center;color:var(--ink);}
 .avatar svg{height:58px;width:auto;display:block;}
+/* the profile avatar wears its booth color as a ring, and carries
+   the way in to editing it: a pencil chip on the circle's shoulder */
+#panel-profile .avatar{position:relative;margin-bottom:20px;
+  box-shadow:0 0 0 3px var(--ground),0 0 0 6px var(--me-deep);}
+.editpen{position:absolute;top:-6px;right:-10px;width:30px;height:30px;border-radius:50%;
+  background:var(--paper);border:1px solid var(--line);display:grid;place-items:center;
+  cursor:pointer;color:var(--ink);box-shadow:0 2px 6px rgba(27,26,22,.10);}
+.editpen svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:1.6;
+  stroke-linecap:round;stroke-linejoin:round;}
+.editpen:focus-visible{outline:2px solid var(--ink);outline-offset:2px;}
 .phead h1{margin:0 0 8px;}
 .phead .sub{margin:0;}
 
@@ -977,7 +987,11 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
       <button class="gearbtn" id="settings-open" aria-label="Settings" aria-haspopup="dialog">
         <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
       </button>
-      <div class="avatar"><svg viewBox="6.4 2.4 36.5 49"><use href="#booth-shape" x="2" y="2" width="48" height="52"/></svg></div>
+      <div class="avatar"><svg viewBox="6.4 2.4 36.5 49"><use href="#booth-shape" x="2" y="2" width="48" height="52"/></svg>
+        <button class="editpen" id="profile-edit" aria-label="Edit profile">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 3a2.83 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5z"/></svg>
+        </button>
+      </div>
       <h1 id="profile-name">Amelia</h1>
       <div class="sub" id="profile-sub"></div>
     </div>
@@ -4745,6 +4759,7 @@ function who(by){
     sheet.setAttribute('aria-hidden','true');
   }
   $('settings-open').addEventListener('click',openS);
+  $('profile-edit').addEventListener('click',openS); /* the pencil is the same door */
   scrim.addEventListener('click',closeS);
   document.addEventListener('keydown',function(e){
     if(e.key==='Escape'&&sheet.classList.contains('open'))closeS();
