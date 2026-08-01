@@ -572,11 +572,10 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
 /* IG rule: username and caption share size, case, and color — weight
    500 vs 400 is the only contrast, separated by a real word-space */
 .post-cap b{font-weight:500;}
-.post-when{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);}
+.post-when{padding:12px 22px 0;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);}
 
-.post-cmts{margin:12px 22px 0;padding:0;border-top:1px solid var(--line);}
-.post-when{border-top:1px solid var(--line);margin:12px 22px 0;padding:8px 0 0;}
-.post-cmts+.post-when{border-top:0;margin:0 22px;padding:4px 0 0;}
+.post-cmts{padding:12px 22px 0;}
+.post-cmts+.post-when{padding-top:4px;}
 .post-cmt-more{background:none;border:0;padding:9px 0 0;cursor:pointer;font-family:var(--mono);
   font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);}
 .post-cmt-more:hover{color:var(--ink);}
