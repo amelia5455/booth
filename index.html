@@ -199,10 +199,10 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
 .field{display:block;margin-bottom:14px;}
 .flabel{display:block;font-size:9px;letter-spacing:.13em;text-transform:uppercase;
   color:var(--ink-soft);margin-bottom:8px;}
-.compose input[type="text"]{width:100%;font-family:var(--mono);font-size:16px;
+.compose input[type="text"],#settings input[type="text"]{width:100%;font-family:var(--mono);font-size:16px;
   color:var(--ink);background:transparent;border:1px solid var(--line);border-radius:11px;padding:11px 12px;}
-.compose input[type="text"]::placeholder{color:var(--ink-soft);}
-.compose input[type="text"]:focus-visible{outline:2px solid var(--ink);outline-offset:1px;}
+.compose input[type="text"]::placeholder,#settings input[type="text"]::placeholder{color:var(--ink-soft);}
+.compose input[type="text"]:focus-visible,#settings input[type="text"]:focus-visible{outline:2px solid var(--ink);outline-offset:1px;}
 .flabel em{font-style:normal;opacity:.6;}
 .compose select{width:100%;font-family:var(--mono);font-size:16px;color:var(--ink);
   background:transparent;border:1px solid var(--line);border-radius:11px;
@@ -356,6 +356,38 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
 .avatar svg{height:58px;width:auto;display:block;}
 .phead h1{margin:0 0 8px;}
 .phead .sub{margin:0;}
+
+/* ── SETTINGS — account controls under You ─────────────────
+   A gear in the profile head opens a bottom sheet: display name
+   (same availability voice as onboarding), booth color, the phone
+   the account signs in with, log out, and delete. Deletion is the
+   one App Store must-have: accounts users can make, they must be
+   able to unmake. */
+.phead{position:relative;}
+.gearbtn{position:absolute;right:0;top:0;width:38px;height:38px;border-radius:50%;
+  border:1px solid var(--line);background:transparent;display:grid;place-items:center;
+  cursor:pointer;color:var(--ink);}
+.gearbtn svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.5;
+  stroke-linecap:round;stroke-linejoin:round;}
+.gearbtn:focus-visible{outline:2px solid var(--ink);outline-offset:2px;}
+#settings{z-index:800;} /* above the You panel (750) and the scrim (785) */
+#settings .avail{display:block;margin-top:8px;font-family:var(--mono);font-size:11px;
+  color:var(--ink-soft);min-height:15px;}
+#settings .avail.bad{color:var(--err);}
+#settings .setsws{display:flex;gap:10px;margin-top:8px;}
+#settings .setsw{width:34px;height:34px;border-radius:50%;cursor:pointer;padding:0;
+  background:var(--c);border:1px solid var(--line);transition:box-shadow .15s;}
+#settings .setsw[aria-checked="true"]{box-shadow:0 0 0 2px var(--paper),0 0 0 3.5px var(--ink);}
+#settings .setsw:focus-visible{outline:2px solid var(--ink);outline-offset:3px;}
+#settings .setphone{margin-top:8px;font-family:var(--mono);font-size:13px;color:var(--ink);}
+#settings .delbtn{background:none;border:0;padding:0;margin-top:16px;cursor:pointer;
+  font-family:var(--mono);font-size:12px;color:var(--err);
+  text-decoration:underline;text-underline-offset:3px;}
+#settings .delbtn:focus-visible{outline:2px solid var(--err);outline-offset:2px;border-radius:4px;}
+#settings .delconfirm{margin-top:12px;}
+#settings .delconfirm p{margin:0 0 8px;font-family:var(--mono);font-size:12px;
+  line-height:1.55;color:var(--ink);}
+#settings .delconfirm .go.del{background:var(--err);}
 
 .shead{display:flex;align-items:baseline;justify-content:space-between;gap:10px;
   margin-top:24px;padding-bottom:8px;border-bottom:1px solid var(--line);}
@@ -906,6 +938,9 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
   <!-- you: saved booths + your own strips -->
   <section class="panel" id="panel-profile" aria-hidden="true">
     <div class="phead">
+      <button class="gearbtn" id="settings-open" aria-label="Settings" aria-haspopup="dialog">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.1"/><path d="M12 2.8v3M12 18.2v3M21.2 12h-3M5.8 12h-3M18.5 5.5l-2.1 2.1M7.6 16.4l-2.1 2.1M18.5 18.5l-2.1-2.1M7.6 7.6L5.5 5.5"/></svg>
+      </button>
       <div class="avatar"><svg viewBox="6.4 2.4 36.5 49"><use href="#booth-shape" x="2" y="2" width="48" height="52"/></svg></div>
       <h1 id="profile-name">Amelia</h1>
       <div class="sub" id="profile-sub"></div>
@@ -916,6 +951,39 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
 
     <div class="shead"><h2>Your strips</h2></div>
     <div id="profile-body"></div>
+  </section>
+
+  <!-- settings: the account, controllable -->
+  <div class="scrim" id="settings-scrim"></div>
+  <section class="sheet" id="settings" aria-hidden="true" role="dialog" aria-label="Settings">
+    <div class="grab"></div>
+    <div class="sheet-head">
+      <div><h2>Settings</h2><span class="hood">your account</span></div>
+    </div>
+
+    <label class="field" style="margin-top:16px">
+      <span class="flabel">Display name</span>
+      <input type="text" id="set-name" maxlength="24" autocomplete="off"
+             autocapitalize="off" spellcheck="false" aria-describedby="set-avail">
+    </label>
+    <span class="avail" id="set-avail" aria-live="polite"></span>
+
+    <span class="flabel" style="display:block;margin-top:24px">Booth color</span>
+    <div class="setsws" id="set-sws" role="radiogroup" aria-label="Booth color"></div>
+
+    <span class="flabel" style="display:block;margin-top:24px">Phone</span>
+    <div class="setphone" id="set-phone"></div>
+    <p class="fhint">used to sign you in · never shown to anyone</p>
+
+    <button class="go go-ghost" id="set-logout" style="margin-top:24px">Log out</button>
+    <button class="delbtn" id="set-del">Delete account</button>
+    <div class="delconfirm" id="set-delconfirm" hidden>
+      <p>This deletes your strips, saves, and name. No undo.</p>
+      <div class="srow">
+        <button class="go go-ghost" id="set-del-keep">Keep account</button>
+        <button class="go del" id="set-del-yes">Delete</button>
+      </div>
+    </div>
   </section>
 
   <!-- post a strip -->
@@ -4430,6 +4498,7 @@ function who(by){
   $('ob-replay').addEventListener('click',function(){
     var name=pendingName||'Amelia', col=pendingColor||COLORS[0];
     window.__meName=name;
+    window.__mePhone=($('ob-sentto').textContent||'').trim()||'+1 (206) 555-0134';
     document.getElementById('profile-name').textContent=name;
     document.documentElement.style.setProperty('--me',col.base);
     document.documentElement.style.setProperty('--me-deep',col.deep);
@@ -4441,6 +4510,122 @@ function who(by){
     ob.addEventListener('transitionend',function(){ob.remove();},{once:true});
     setTimeout(function(){if(ob.parentNode)ob.remove();},700); /* reduced-motion fallback */
   });
+})();
+
+
+/* ══ SETTINGS — the account, controllable.
+   Name keeps the onboarding voice: silence while typing, checked at
+   rest, never guess available. Commit happens on Enter or blur, and
+   quietly. Color is the user's pigment: it applies on tap. Leaving
+   is allowed to be easy. ══ */
+(function(){
+  /* mirrors of the onboarding's canned backend, until the real one */
+  var COLORS=[
+    {name:'pink',   base:'#D999B8', deep:'#C9789F'},
+    {name:'blue',   base:'#9BAECB', deep:'#7B92B5'},
+    {name:'green',  base:'#A5B98F', deep:'#87A06E'},
+    {name:'purple', base:'#B3A0CB', deep:'#9583B4'},
+    {name:'orange', base:'#D9A879', deep:'#C48B57'}
+  ];
+  var TAKEN=['ren','amelia','booth'];
+  var $=function(id){return document.getElementById(id);};
+  var sheet=$('settings'), scrim=$('settings-scrim');
+  var nameIn=$('set-name'), avail=$('set-avail'), sws=$('set-sws');
+  var checkT, committed='', okValue=null;
+
+  function openS(){
+    committed=window.__meName||'Amelia';
+    nameIn.value=committed; okValue=null;
+    avail.textContent=''; avail.classList.remove('bad');
+    $('set-phone').textContent=window.__mePhone||'+1 (206) 555-0134';
+    $('set-delconfirm').hidden=true; $('set-del').hidden=false;
+    drawSws();
+    sheet.classList.add('open'); scrim.classList.add('open');
+    sheet.setAttribute('aria-hidden','false');
+  }
+  function closeS(){
+    sheet.classList.remove('open'); scrim.classList.remove('open');
+    sheet.setAttribute('aria-hidden','true');
+  }
+  $('settings-open').addEventListener('click',openS);
+  scrim.addEventListener('click',closeS);
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape'&&sheet.classList.contains('open'))closeS();
+  });
+
+  function drawSws(){
+    var me=getComputedStyle(document.documentElement).getPropertyValue('--me').trim().toLowerCase();
+    sws.innerHTML='';
+    COLORS.forEach(function(c){
+      var b=document.createElement('button');
+      b.type='button'; b.className='setsw';
+      b.setAttribute('role','radio');
+      b.setAttribute('aria-label',c.name);
+      b.setAttribute('aria-checked',String(c.base.toLowerCase()===me));
+      b.style.setProperty('--c',c.base);
+      b.addEventListener('click',function(){
+        document.documentElement.style.setProperty('--me',c.base);
+        document.documentElement.style.setProperty('--me-deep',c.deep);
+        drawSws(); drawSocial(); drawProfile();
+      });
+      sws.appendChild(b);
+    });
+  }
+
+  function problem(v){
+    if(v.length<2) return 'Names need at least 2 characters.';
+    if(!/[a-z0-9]/i.test(v)) return 'Needs at least a couple of letters or numbers.';
+    return '';
+  }
+  function check(){
+    var v=nameIn.value.trim();
+    okValue=null;
+    if(v.toLowerCase()===committed.toLowerCase()){
+      avail.textContent=''; avail.classList.remove('bad'); return;
+    }
+    var p=problem(v);
+    if(p){avail.classList.add('bad'); avail.textContent=p; return;}
+    if(netFails(v)){
+      avail.classList.add('bad');
+      avail.textContent='Can’t check that right now. Give it a second and type again.';
+      return;
+    }
+    if(DEMO && TAKEN.indexOf(v.toLowerCase())!==-1){
+      avail.classList.add('bad');
+      avail.textContent='“'+v+'” is taken. Try another?';
+      return;
+    }
+    okValue=v;
+    avail.classList.remove('bad'); avail.textContent='available';
+  }
+  function commit(){
+    if(!okValue)return;
+    committed=okValue; window.__meName=okValue; okValue=null;
+    $('profile-name').textContent=committed;
+    avail.classList.remove('bad'); avail.textContent='saved';
+    drawSocial(); drawProfile();
+  }
+  nameIn.addEventListener('input',function(){
+    avail.classList.remove('bad'); avail.textContent='checking…';
+    clearTimeout(checkT); checkT=setTimeout(check,350);
+  });
+  nameIn.addEventListener('keydown',function(e){
+    if(e.key!=='Enter')return;
+    clearTimeout(checkT); check(); commit();
+  });
+  nameIn.addEventListener('blur',function(){
+    clearTimeout(checkT); check(); commit();
+  });
+
+  $('set-logout').addEventListener('click',function(){location.reload();});
+  $('set-del').addEventListener('click',function(){
+    $('set-del').hidden=true; $('set-delconfirm').hidden=false;
+  });
+  $('set-del-keep').addEventListener('click',function(){
+    $('set-delconfirm').hidden=true; $('set-del').hidden=false;
+  });
+  /* prototype: reload stands in for the server-side wipe */
+  $('set-del-yes').addEventListener('click',function(){location.reload();});
 })();
 
 
