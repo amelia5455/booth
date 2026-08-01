@@ -330,8 +330,8 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
   transform:translateY(100%);transition:transform .3s cubic-bezier(.2,.8,.2,1);
   visibility:hidden;}
 .panel.open{transform:translateY(0);visibility:visible;}
-.panel h1{font-family:var(--serif);font-weight:400;font-size:34px;margin:0 0 7px;letter-spacing:-.01em;}
-.panel .sub{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:28px;}
+.panel h1{font-family:var(--serif);font-weight:400;font-size:34px;line-height:1.05;margin:0 0 8px;letter-spacing:-.01em;}
+.panel .sub{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:24px;}
 
 /* thumbnail and text centre on a shared axis, and the two text lines stack —
    name over meta — instead of running on as one baseline-fighting line */
@@ -349,7 +349,7 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
 .avatar{width:88px;height:88px;margin:0 auto 12px;border-radius:50%;background:var(--paper);
   border:1px solid var(--line);display:grid;place-items:center;color:var(--ink);}
 .avatar svg{height:58px;width:auto;display:block;}
-.phead h1{margin:0 0 4px;}
+.phead h1{margin:0 0 8px;}
 .phead .sub{margin:0;}
 
 .shead{display:flex;align-items:baseline;justify-content:space-between;gap:10px;
@@ -666,9 +666,10 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
 #ob .screen.on{transform:translateX(0);visibility:visible;z-index:2;}
 #ob .screen.left{transform:translateX(-24%);}
 
-/* vertical rhythm is a 4/8/12/16/24 scale — no one-off gaps */
+/* vertical rhythm is a 4/8/12/16/24 scale — no one-off gaps.
+   Display headings get 8px of air before whatever follows. */
 #ob .screen h1{font-family:var(--serif);font-weight:400;font-size:34px;line-height:1.05;
-  margin:0 0 4px;letter-spacing:-.01em;}
+  margin:0 0 8px;letter-spacing:-.01em;}
 #ob .obsub{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);
   margin-bottom:12px;display:block;}
 #ob .obnote{font-family:var(--mono);font-size:12px;line-height:1.55;margin:4px 0 0;color:var(--ink-soft);}
@@ -824,7 +825,7 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
 #ob .obavatar{width:88px;height:88px;margin:0 auto 12px;border-radius:50%;background:var(--paper);
   border:1px solid var(--line);display:grid;place-items:center;color:var(--ink);}
 #ob .obavatar svg{height:58px;width:auto;display:block;}
-#ob .obphead h1{margin:0 0 5px;}
+#ob .obphead h1{margin:0 0 8px;}
 #ob .obphead .obsub{margin-bottom:0;}
 
 @keyframes obAvIn{0%{opacity:0;transform:scale(.7)}70%{opacity:1;transform:scale(1.05)}100%{opacity:1;transform:scale(1)}}
