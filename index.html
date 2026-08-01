@@ -1167,7 +1167,6 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
       <span class="flabel">Caption <em>optional</em></span>
       <input type="text" id="c-cap" maxlength="140" placeholder="six frames, one blink">
     </label>
-    <p class="fhint demo" style="margin-top:8px">prototype · “offline” in a caption or comment fails the send</p>
 
     <div class="crow">
       <button class="btn-ghost" id="c-cancel">Cancel</button>
@@ -1281,7 +1280,6 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
         <p class="oberr" id="ob-phoneerr" role="alert" aria-live="assertive"></p>
         <p class="fhint" id="ob-phone-hint">used to sign you in · never for marketing<br>msg &amp; data rates may apply</p>
         <div class="spacer"></div>
-        <p class="fhint demo">prototype · a number ending 0000 can't be reached</p>
         <button class="obgo" id="ob-go-phone" disabled>Text me the code</button>
       </section>
 
@@ -1306,7 +1304,6 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
              from the flexible space below, so errors never shift a thing -->
         <p class="oberr" id="ob-codeerr" role="alert" aria-live="assertive"></p>
         <div class="spacer"></div>
-        <p class="fhint demo">prototype · 000000 is wrong · 111111 expires the code instantly · anything else works</p>
         <button class="obgo" id="ob-go-code" disabled>Verify</button>
       </section>
 
@@ -1334,7 +1331,6 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
         </div>
 
         <div class="spacer"></div>
-        <p class="fhint demo">prototype · “ren” is taken · “offline” fails the check</p>
         <button class="obgo" id="ob-go-name" disabled>Finish sign up</button>
       </section>
 
@@ -1378,7 +1374,6 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
               <path d="M220 92v9M215.5 96.5h9"/></g>
           </svg>
         </div>
-        <p class="fhint demo">prototype · shift-tap the button to preview an uncovered city</p>
         <button class="obgo" id="ob-go-loc">Use my location</button>
         <p class="obnote" style="text-align:center;margin-top:12px">
           <button class="swap" id="ob-loc-skip">Skip for now</button></p>
@@ -1434,7 +1429,6 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
    prototype hints. Flip false for a build with no fictions; real
    behavior then needs a backend behind it. */
 const DEMO = true;
-if(!DEMO) document.querySelectorAll('.fhint.demo').forEach(el=>el.remove());
 
 function esc(s){
   return String(s == null ? '' : s)

@@ -27,9 +27,10 @@ With it on, the flows can be walked deterministically:
 | shift-tap "Use my location" | location step | the "Not here yet" uncovered-city state |
 | the word `offline` in a caption or comment | compose / comments | failed send that preserves the user's work |
 
-Flip `DEMO` to `false` and the trigger codes, the "offline" keyword, the
-canned taken-name list, and all on-screen "prototype ·" hints disappear.
-The behaviors they simulate then need a real backend.
+The triggers are deliberately invisible in the UI — this table is their
+only documentation. Flip `DEMO` to `false` and the trigger codes, the
+"offline" keyword, and the canned taken-name list disappear. The
+behaviors they simulate then need a real backend.
 
 Login is canned (any number + any code restores a sample account) regardless
 of the flag — passwordless auth requires a server to be anything else.
