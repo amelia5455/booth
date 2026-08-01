@@ -386,6 +386,7 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
   border:1px solid var(--line);background:var(--ground);position:relative;padding:0;
   transition:background .2s,border-color .2s;}
 #settings .tgl::after{content:'';position:absolute;top:2px;left:2px;width:20px;height:20px;
+  box-sizing:border-box; /* the global border-box * rule skips pseudo-elements */
   border-radius:50%;background:var(--paper);border:1px solid var(--line);
   transition:transform .2s cubic-bezier(.2,.8,.2,1);}
 #settings .tgl[aria-checked="true"]{background:var(--ink);border-color:var(--ink);}
