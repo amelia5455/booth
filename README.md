@@ -37,10 +37,13 @@ of the flag — passwordless auth requires a server to be anything else.
 ## Design system notes
 
 - **Chrome is ink, paper, and glass.** `--ink` and `--paper`/`--ground` are
-  the palette. The only hue the chrome may use is `--err` (rust, WCAG AA on
-  both surfaces) for failures. Pigment otherwise belongs exclusively to the
-  user's chosen booth color (`--me` / `--me-deep`), which defaults to ink
-  until a choice is made.
+  the palette. The chrome may use two hues, both in the same desaturated
+  register: `--err` (rust, WCAG AA on both surfaces) for failures, and
+  `--heart` (like-red, one step warmer) for likes, the same red for every
+  profile. Country-flag emoji in the phone picker are the one full-color
+  exception. Pigment otherwise belongs exclusively to the user's chosen
+  booth color (`--me` / `--me-deep`), which defaults to ink until a choice
+  is made.
 - **Errors are inline and calm.** Wrong input shakes; expiry and denial do
   not (the user did nothing). Denial of permissions is neutral copy, never
   the error hue. Copy never confirms whether a phone number has an account.
