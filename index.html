@@ -827,7 +827,7 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
 #ob .obgo:disabled{opacity:.32;cursor:not-allowed;}
 #ob .obgo:focus-visible{outline:2px solid var(--ink);outline-offset:2px;}
 
-#ob .obphead{text-align:center;padding-top:8vh;}
+#ob .obphead{text-align:center;padding-top:10vh;}
 #ob .obavatar{width:88px;height:88px;margin:0 auto 12px;border-radius:50%;background:var(--paper);
   border:1px solid var(--line);display:grid;place-items:center;color:var(--ink);}
 #ob .obavatar svg{height:58px;width:auto;display:block;}
@@ -839,8 +839,7 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
 #ob-s-done.arrived .obavatar{animation:obAvIn .5s cubic-bezier(.3,1.4,.4,1) .32s both;}
 #ob-s-done.arrived h1{animation:obRiseIn .4s cubic-bezier(.2,.8,.2,1) .5s both;}
 #ob-s-done.arrived .obsub{animation:obRiseIn .4s cubic-bezier(.2,.8,.2,1) .6s both;}
-#ob-s-done.arrived .obstatus{animation:obRiseIn .4s cubic-bezier(.2,.8,.2,1) .68s both;}
-#ob-s-done.arrived .obgo{animation:obRiseIn .4s cubic-bezier(.2,.8,.2,1) .78s both;}
+#ob-s-done.arrived .obgo{animation:obRiseIn .4s cubic-bezier(.2,.8,.2,1) .72s both;}
 </style>
 </head>
 <body>
@@ -1206,8 +1205,7 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
         <div class="obphead">
           <div class="obavatar" id="ob-doneav" aria-hidden="true"><svg viewBox="0 0 885 982"><use href="#booth-shape"/></svg></div>
           <h1 id="ob-hello">Welcome.</h1>
-          <span class="obsub">you're in</span>
-          <div class="obstatus" id="ob-donest"><span class="dot" id="ob-donedot"></span><span>signed in</span></div>
+          <span class="obsub">you're in!</span>
         </div>
         <div class="spacer"></div>
         <button class="obgo" id="ob-replay">Start finding booths</button>
@@ -4212,8 +4210,6 @@ function who(by){
       pendingName='Amelia'; pendingColor=COLORS[0];
       $('ob-hello').textContent='Welcome back, Amelia.';
       $('ob-doneav').style.color=pendingColor.deep;
-      $('ob-donest').style.color=pendingColor.deep;
-      $('ob-donedot').style.background=pendingColor.base;
       go(5);   /* returning account: name, color, AND city are remembered */
     } else { go(3); }
   });
@@ -4361,8 +4357,6 @@ function who(by){
     pendingName=dn.value.trim(); pendingColor=picked;
     $('ob-hello').textContent='Welcome, '+pendingName+'.';
     $('ob-doneav').style.color=pendingColor.deep;
-    $('ob-donest').style.color=pendingColor.deep;
-    $('ob-donedot').style.background=pendingColor.base;
     go(4);
   });
 
