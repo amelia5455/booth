@@ -309,7 +309,8 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
   background:none;border:0;cursor:pointer;font-family:inherit;text-align:left;
   padding:11px 12px;border-radius:12px;color:var(--ink);}
 .cityrow:hover{background:rgba(27,26,22,.045);}
-.cityrow .n{font-family:var(--serif);font-size:19px;line-height:1.15;}
+.cityrow .n{font-family:var(--serif);font-size:19px;line-height:1.15;flex:1;text-align:left;}
+.cityrow .fl{font-size:17px;line-height:1;flex:none;width:24px;}
 .cityrow .c{font-size:9px;letter-spacing:.1em;line-height:1;text-transform:uppercase;color:var(--ink-soft);white-space:nowrap;padding-top:2px;}
 .cityrow[aria-selected="true"]{background:var(--ink);}
 .cityrow[aria-selected="true"] .n,.cityrow[aria-selected="true"] .c{color:var(--paper);}
@@ -3913,36 +3914,42 @@ function who(by){
      The error line never says whether a number HAS an account —
      that answer is an enumeration oracle, not a courtesy. */
   var COUNTRIES=[
-    ['United States','1'],['Canada','1'],
-    ['Afghanistan','93'],['Albania','355'],['Algeria','213'],['Argentina','54'],
-    ['Armenia','374'],['Australia','61'],['Austria','43'],['Azerbaijan','994'],
-    ['Bahrain','973'],['Bangladesh','880'],['Belarus','375'],['Belgium','32'],
-    ['Bolivia','591'],['Bosnia & Herzegovina','387'],['Brazil','55'],['Bulgaria','359'],
-    ['Cambodia','855'],['Chile','56'],['China','86'],['Colombia','57'],
-    ['Costa Rica','506'],['Croatia','385'],['Cuba','53'],['Cyprus','357'],
-    ['Czechia','420'],['Denmark','45'],['Dominican Republic','1'],['Ecuador','593'],
-    ['Egypt','20'],['El Salvador','503'],['Estonia','372'],['Ethiopia','251'],
-    ['Finland','358'],['France','33'],['Georgia','995'],['Germany','49'],
-    ['Ghana','233'],['Greece','30'],['Guatemala','502'],['Honduras','504'],
-    ['Hong Kong','852'],['Hungary','36'],['Iceland','354'],['India','91'],
-    ['Indonesia','62'],['Iran','98'],['Iraq','964'],['Ireland','353'],
-    ['Israel','972'],['Italy','39'],['Jamaica','1'],['Japan','81'],
-    ['Jordan','962'],['Kazakhstan','7'],['Kenya','254'],['Kuwait','965'],
-    ['Laos','856'],['Latvia','371'],['Lebanon','961'],['Lithuania','370'],
-    ['Luxembourg','352'],['Malaysia','60'],['Mexico','52'],['Moldova','373'],
-    ['Mongolia','976'],['Morocco','212'],['Myanmar','95'],['Nepal','977'],
-    ['Netherlands','31'],['New Zealand','64'],['Nicaragua','505'],['Nigeria','234'],
-    ['North Macedonia','389'],['Norway','47'],['Oman','968'],['Pakistan','92'],
-    ['Panama','507'],['Paraguay','595'],['Peru','51'],['Philippines','63'],
-    ['Poland','48'],['Portugal','351'],['Qatar','974'],['Romania','40'],
-    ['Russia','7'],['Saudi Arabia','966'],['Senegal','221'],['Serbia','381'],
-    ['Singapore','65'],['Slovakia','421'],['Slovenia','386'],['South Africa','27'],
-    ['South Korea','82'],['Spain','34'],['Sri Lanka','94'],['Sweden','46'],
-    ['Switzerland','41'],['Taiwan','886'],['Tanzania','255'],['Thailand','66'],
-    ['Tunisia','216'],['Turkey','90'],['Uganda','256'],['Ukraine','380'],
-    ['United Arab Emirates','971'],['United Kingdom','44'],['Uruguay','598'],
-    ['Uzbekistan','998'],['Venezuela','58'],['Vietnam','84']
+    ['United States','1','US'],['Canada','1','CA'],
+    ['Afghanistan','93','AF'],['Albania','355','AL'],['Algeria','213','DZ'],['Argentina','54','AR'],
+    ['Armenia','374','AM'],['Australia','61','AU'],['Austria','43','AT'],['Azerbaijan','994','AZ'],
+    ['Bahrain','973','BH'],['Bangladesh','880','BD'],['Belarus','375','BY'],['Belgium','32','BE'],
+    ['Bolivia','591','BO'],['Bosnia & Herzegovina','387','BA'],['Brazil','55','BR'],['Bulgaria','359','BG'],
+    ['Cambodia','855','KH'],['Chile','56','CL'],['China','86','CN'],['Colombia','57','CO'],
+    ['Costa Rica','506','CR'],['Croatia','385','HR'],['Cuba','53','CU'],['Cyprus','357','CY'],
+    ['Czechia','420','CZ'],['Denmark','45','DK'],['Dominican Republic','1','DO'],['Ecuador','593','EC'],
+    ['Egypt','20','EG'],['El Salvador','503','SV'],['Estonia','372','EE'],['Ethiopia','251','ET'],
+    ['Finland','358','FI'],['France','33','FR'],['Georgia','995','GE'],['Germany','49','DE'],
+    ['Ghana','233','GH'],['Greece','30','GR'],['Guatemala','502','GT'],['Honduras','504','HN'],
+    ['Hong Kong','852','HK'],['Hungary','36','HU'],['Iceland','354','IS'],['India','91','IN'],
+    ['Indonesia','62','ID'],['Iran','98','IR'],['Iraq','964','IQ'],['Ireland','353','IE'],
+    ['Israel','972','IL'],['Italy','39','IT'],['Jamaica','1','JM'],['Japan','81','JP'],
+    ['Jordan','962','JO'],['Kazakhstan','7','KZ'],['Kenya','254','KE'],['Kuwait','965','KW'],
+    ['Laos','856','LA'],['Latvia','371','LV'],['Lebanon','961','LB'],['Lithuania','370','LT'],
+    ['Luxembourg','352','LU'],['Malaysia','60','MY'],['Mexico','52','MX'],['Moldova','373','MD'],
+    ['Mongolia','976','MN'],['Morocco','212','MA'],['Myanmar','95','MM'],['Nepal','977','NP'],
+    ['Netherlands','31','NL'],['New Zealand','64','NZ'],['Nicaragua','505','NI'],['Nigeria','234','NG'],
+    ['North Macedonia','389','MK'],['Norway','47','NO'],['Oman','968','OM'],['Pakistan','92','PK'],
+    ['Panama','507','PA'],['Paraguay','595','PY'],['Peru','51','PE'],['Philippines','63','PH'],
+    ['Poland','48','PL'],['Portugal','351','PT'],['Qatar','974','QA'],['Romania','40','RO'],
+    ['Russia','7','RU'],['Saudi Arabia','966','SA'],['Senegal','221','SN'],['Serbia','381','RS'],
+    ['Singapore','65','SG'],['Slovakia','421','SK'],['Slovenia','386','SI'],['South Africa','27','ZA'],
+    ['South Korea','82','KR'],['Spain','34','ES'],['Sri Lanka','94','LK'],['Sweden','46','SE'],
+    ['Switzerland','41','CH'],['Taiwan','886','TW'],['Tanzania','255','TZ'],['Thailand','66','TH'],
+    ['Tunisia','216','TN'],['Turkey','90','TR'],['Uganda','256','UG'],['Ukraine','380','UA'],
+    ['United Arab Emirates','971','AE'],['United Kingdom','44','GB'],['Uruguay','598','UY'],
+    ['Uzbekistan','998','UZ'],['Venezuela','58','VE'],['Vietnam','84','VN']
   ];
+  /* ISO code → regional-indicator pair; the emoji set every platform ships */
+  function ccFlag(iso){
+    return String.fromCodePoint.apply(null,[].map.call(iso,function(ch){
+      return 0x1F1E6+ch.charCodeAt(0)-65;
+    }));
+  }
   var ph=$('ob-phone'), goPhone=$('ob-go-phone'), phErr=$('ob-phoneerr');
   var ccBtn=$('ob-ccbtn'), ccLabel=$('ob-cclabel');
   var ccSheet=$('ob-ccsheet'), ccScrim=$('ob-ccscrim');
@@ -3957,6 +3964,7 @@ function who(by){
          c[1].indexOf(f.replace('+',''))!==0) return '';
       return '<button type="button" class="cityrow" role="option" data-cc="'+i+'"'+
         ' aria-selected="'+(i===ccIdx)+'">'+
+        '<span class="fl" aria-hidden="true">'+ccFlag(c[2])+'</span>'+
         '<span class="n">'+c[0]+'</span><span class="c">+'+c[1]+'</span></button>';
     }).join('');
     ccList.innerHTML=html||'<p class="ccempty">no matches — try the country’s name or its +code</p>';
