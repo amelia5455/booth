@@ -370,7 +370,33 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
 .gearbtn svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.5;
   stroke-linecap:round;stroke-linejoin:round;}
 .gearbtn:focus-visible{outline:2px solid var(--ink);outline-offset:2px;}
-#settings{z-index:800;} /* above the You panel (750) and the scrim (785) */
+#settings{z-index:800; /* above the You panel (750) and the scrim (785) */
+  max-height:80%;overflow-y:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+#settings::-webkit-scrollbar{display:none;}
+#settings .setg{margin-top:24px;padding-top:16px;border-top:1px solid var(--line);}
+#settings .glabel{display:block;font-size:9px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-soft);}
+#settings .setrow{display:flex;align-items:center;justify-content:space-between;gap:14px;
+  padding:12px 0;}
+#settings .setrow+.setrow{border-top:1px solid var(--line);}
+#settings .setrow .t{font-family:var(--mono);font-size:13px;color:var(--ink);}
+#settings .setrow .d{font-family:var(--mono);font-size:11px;line-height:1.5;
+  color:var(--ink-soft);margin-top:3px;}
+#settings .tgl{flex:0 0 auto;width:42px;height:26px;border-radius:100px;cursor:pointer;
+  border:1px solid var(--line);background:var(--ground);position:relative;padding:0;
+  transition:background .2s,border-color .2s;}
+#settings .tgl::after{content:'';position:absolute;top:2px;left:2px;width:20px;height:20px;
+  border-radius:50%;background:var(--paper);border:1px solid var(--line);
+  transition:transform .2s cubic-bezier(.2,.8,.2,1);}
+#settings .tgl[aria-checked="true"]{background:var(--ink);border-color:var(--ink);}
+#settings .tgl[aria-checked="true"]::after{transform:translateX(16px);}
+#settings .tgl:focus-visible{outline:2px solid var(--ink);outline-offset:2px;}
+#settings .rowbtn{flex:0 0 auto;background:none;border:0;padding:0;cursor:pointer;
+  font-family:var(--mono);font-size:12px;color:var(--ink);
+  text-decoration:underline;text-underline-offset:3px;}
+#settings .rowbtn:focus-visible{outline:2px solid var(--ink);outline-offset:2px;border-radius:4px;}
+#settings .vfoot{margin:24px 0 0;text-align:center;font-family:var(--mono);font-size:9px;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);}
 #settings .avail{display:block;margin-top:8px;font-family:var(--mono);font-size:11px;
   color:var(--ink-soft);min-height:15px;}
 #settings .avail.bad{color:var(--err);}
@@ -939,7 +965,7 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
   <section class="panel" id="panel-profile" aria-hidden="true">
     <div class="phead">
       <button class="gearbtn" id="settings-open" aria-label="Settings" aria-haspopup="dialog">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.1"/><path d="M12 2.8v3M12 18.2v3M21.2 12h-3M5.8 12h-3M18.5 5.5l-2.1 2.1M7.6 16.4l-2.1 2.1M18.5 18.5l-2.1-2.1M7.6 7.6L5.5 5.5"/></svg>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
       </button>
       <div class="avatar"><svg viewBox="6.4 2.4 36.5 49"><use href="#booth-shape" x="2" y="2" width="48" height="52"/></svg></div>
       <h1 id="profile-name">Amelia</h1>
@@ -961,19 +987,54 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
       <div><h2>Settings</h2><span class="hood">your account</span></div>
     </div>
 
-    <label class="field" style="margin-top:16px">
-      <span class="flabel">Display name</span>
-      <input type="text" id="set-name" maxlength="24" autocomplete="off"
-             autocapitalize="off" spellcheck="false" aria-describedby="set-avail">
-    </label>
-    <span class="avail" id="set-avail" aria-live="polite"></span>
+    <div class="setg">
+      <span class="glabel">Account</span>
+      <label class="field" style="margin-top:12px;margin-bottom:0">
+        <span class="flabel">Display name</span>
+        <input type="text" id="set-name" maxlength="24" autocomplete="off"
+               autocapitalize="off" spellcheck="false" aria-describedby="set-avail">
+      </label>
+      <span class="avail" id="set-avail" aria-live="polite"></span>
 
-    <span class="flabel" style="display:block;margin-top:24px">Booth color</span>
-    <div class="setsws" id="set-sws" role="radiogroup" aria-label="Booth color"></div>
+      <span class="flabel" style="display:block;margin-top:16px">Booth color</span>
+      <div class="setsws" id="set-sws" role="radiogroup" aria-label="Booth color"></div>
 
-    <span class="flabel" style="display:block;margin-top:24px">Phone</span>
-    <div class="setphone" id="set-phone"></div>
-    <p class="fhint">used to sign you in · never shown to anyone</p>
+      <span class="flabel" style="display:block;margin-top:16px">Phone</span>
+      <div class="setphone" id="set-phone"></div>
+      <p class="fhint">used to sign you in · never shown to anyone</p>
+    </div>
+
+    <div class="setg">
+      <span class="glabel">Notifications</span>
+      <div class="setrow">
+        <div><div class="t">New booths in Seattle</div>
+          <div class="d">when a booth lands in your city</div></div>
+        <button class="tgl" role="switch" aria-checked="true" aria-label="New booths in Seattle"></button>
+      </div>
+      <div class="setrow">
+        <div><div class="t">Comments</div>
+          <div class="d">someone comments on your strip</div></div>
+        <button class="tgl" role="switch" aria-checked="true" aria-label="Comments"></button>
+      </div>
+      <div class="setrow">
+        <div><div class="t">Likes</div>
+          <div class="d">someone likes your strip</div></div>
+        <button class="tgl" role="switch" aria-checked="false" aria-label="Likes"></button>
+      </div>
+    </div>
+
+    <div class="setg">
+      <span class="glabel">Privacy</span>
+      <div class="setrow">
+        <div><div class="t">Location</div>
+          <div class="d">only read while you look at the map · it never leaves this phone</div></div>
+      </div>
+      <div class="setrow">
+        <div><div class="t">Your data</div>
+          <div class="d">name, saves, and strips as a file</div></div>
+        <button class="rowbtn" id="set-export">Download</button>
+      </div>
+    </div>
 
     <button class="go go-ghost" id="set-logout" style="margin-top:24px">Log out</button>
     <button class="delbtn" id="set-del">Delete account</button>
@@ -984,6 +1045,7 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
         <button class="go del" id="set-del-yes">Delete</button>
       </div>
     </div>
+    <p class="vfoot">booth 0.1 · seattle first</p>
   </section>
 
   <!-- post a strip -->
@@ -4615,6 +4677,37 @@ function who(by){
   });
   nameIn.addEventListener('blur',function(){
     clearTimeout(checkT); check(); commit();
+  });
+
+  /* notification switches: design intent now, wiring when push lands */
+  sheet.addEventListener('click',function(e){
+    var t=e.target.closest('.tgl');
+    if(t)t.setAttribute('aria-checked',String(t.getAttribute('aria-checked')!=='true'));
+  });
+
+  /* your data, actually downloadable: everything the prototype holds
+     about you, minus the photos themselves (those stay on the phone) */
+  $('set-export').addEventListener('click',function(){
+    var mine=[];
+    try{
+      mine=allStrips().filter(function(s){return s.by==='you';})
+        .map(function(s){return JSON.parse(JSON.stringify(s,function(k,v){
+          return k==='src'?undefined:v;}));});
+    }catch(err){}
+    var data={
+      name:window.__meName||'Amelia',
+      phone:window.__mePhone||'',
+      city:'Seattle',
+      saved:(typeof saved!=='undefined')?Array.from(saved):[],
+      strips:mine
+    };
+    var blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+    var a=document.createElement('a');
+    a.href=URL.createObjectURL(blob);
+    a.download='booth-data.json';
+    a.click();
+    URL.revokeObjectURL(a.href);
+    toast('Your data is downloading.');
   });
 
   $('set-logout').addEventListener('click',function(){location.reload();});
