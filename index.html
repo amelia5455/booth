@@ -517,10 +517,15 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
   transform:translate(-50%,-50%) scale(.2);opacity:0;}
 .heart-pop svg{display:block;width:100%;height:100%;fill:var(--heart);stroke:none;}
 .heart-pop{animation:heartMini var(--dur,.9s) ease-out var(--delay,0s) forwards;}
+/* each heart pops in with an overshoot, sails out, then sighs: a
+   10px gravity settle as it fades. Opacity holds until late so the
+   bloom reads as a shape, not a smear. */
 @keyframes heartMini{
   0%{opacity:0;transform:translate(-50%,-50%) scale(.2) rotate(0deg)}
-  25%{opacity:1;transform:translate(calc(-50% + var(--dx,0px)*.45), calc(-50% + var(--dy,-30px)*.45)) scale(var(--s,1)) rotate(calc(var(--rot,0deg)*.5))}
-  100%{opacity:0;transform:translate(calc(-50% + var(--dx,0px)), calc(-50% + var(--dy,-30px))) scale(calc(var(--s,1)*.8)) rotate(var(--rot,0deg))}}
+  18%{opacity:1;transform:translate(calc(-50% + var(--dx,0px)*.3), calc(-50% + var(--dy,-30px)*.3)) scale(calc(var(--s,1)*1.18)) rotate(calc(var(--rot,0deg)*.4))}
+  45%{transform:translate(calc(-50% + var(--dx,0px)*.72), calc(-50% + var(--dy,-30px)*.72)) scale(var(--s,1)) rotate(calc(var(--rot,0deg)*.75))}
+  78%{opacity:1}
+  100%{opacity:0;transform:translate(calc(-50% + var(--dx,0px)), calc(-50% + var(--dy,-30px) + 10px)) scale(calc(var(--s,1)*.72)) rotate(var(--rot,0deg))}}
 
 /* the heart button itself confirms with a squash-and-pop */
 @keyframes actPop{0%{transform:scale(1)}30%{transform:scale(.72)}62%{transform:scale(1.28)}100%{transform:scale(1)}}
@@ -3459,25 +3464,38 @@ function heartCluster(container, x, y, {big = true} = {}){
     const el = document.createElement('span');
     el.className = 'heart-pop';
     el.innerHTML = DOODLE_HEARTS[Math.floor(Math.random() * DOODLE_HEARTS.length)];
-    Object.assign(el.style, styles);
+    /* custom properties need setProperty — Object.assign drops them
+       silently, which once flattened every burst into one clump */
+    for(const k in styles){
+      if(k.indexOf('--') === 0) el.style.setProperty(k, styles[k]);
+      else el.style[k] = styles[k];
+    }
     el.addEventListener('animationend', () => el.remove(), {once: true});
     container.appendChild(el);
   };
 
-  // no big hero heart — a double-tap just gets a denser, wider fizz
-  const n = (big ? 9 : 6) + Math.floor(Math.random() * 3);
+  /* no big hero heart — a double-tap just gets a denser, wider fizz.
+     The fan is sliced evenly so hearts can't clump: one per slice,
+     jittered within it. Delays sweep across the arc (direction picked
+     per tap), so the cluster blooms like a wave instead of appearing
+     all at once. Far hearts fly longer. */
+  const n = (big ? 10 : 7) + Math.floor(Math.random() * 3);
+  const arcStart = -165, arcSpan = 150;
+  const slice = arcSpan / n;
+  const sweepLtr = Math.random() < 0.5;
   for(let i = 0; i < n; i++){
-    const angle = (-30 - Math.random() * 120) * Math.PI / 180;
-    const dist  = 30 + Math.random() * (big ? 58 : 42);
+    const angle = (arcStart + slice * (i + 0.5) + (Math.random() - 0.5) * slice * 0.6) * Math.PI / 180;
+    const dist  = (big ? 48 : 38) + Math.random() * (big ? 66 : 50);
+    const order = sweepLtr ? i : n - 1 - i;
     spawn({
       left: x + (Math.random() * 26 - 13) + 'px',
       top:  y + (Math.random() * 14 - 7)  + 'px',
       '--dx':    Math.cos(angle) * dist + 'px',
       '--dy':    Math.sin(angle) * dist + 'px',
-      '--s':     (0.6 + Math.random() * 0.8).toFixed(2),
-      '--rot':   (Math.random() * 44 - 22).toFixed(0) + 'deg',
-      '--dur':   (0.75 + Math.random() * 0.4).toFixed(2) + 's',
-      '--delay': (Math.random() * 0.14).toFixed(2) + 's'
+      '--s':     (0.55 + Math.random() * 0.95).toFixed(2),
+      '--rot':   (Math.random() * 52 - 26).toFixed(0) + 'deg',
+      '--dur':   (0.65 + dist / 150 + Math.random() * 0.15).toFixed(2) + 's',
+      '--delay': (order * 0.04 + Math.random() * 0.05).toFixed(2) + 's'
     });
   }
 }
