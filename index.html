@@ -190,6 +190,10 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
 .fab.show{opacity:1;visibility:visible;transform:translateY(0) scale(1);}
 .fab:focus-visible{outline:2px solid var(--ink);outline-offset:3px;}
 
+#addbooth{z-index:800;}
+#addbooth .ab-src{width:100%;}
+#addbooth .ab-src.ok{border-style:solid;border-color:var(--ink);color:var(--ink);}
+#addbooth .go:disabled{background:var(--stone);cursor:default;}
 .compose{position:absolute;left:8px;right:8px;z-index:790;
   bottom:calc(var(--nav-h) + var(--safe) + var(--nav-gap) + 8px);
   background:var(--paper);border:1px solid var(--line);border-radius:20px;
@@ -202,10 +206,10 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
 .field{display:block;margin-bottom:14px;}
 .flabel{display:block;font-size:9px;letter-spacing:.13em;text-transform:uppercase;
   color:var(--ink-soft);margin-bottom:8px;}
-.compose input[type="text"],.setsheet input[type="text"]{width:100%;font-family:var(--mono);font-size:16px;
+.compose input[type="text"],.setsheet input[type="text"],#addbooth input[type="text"]{width:100%;font-family:var(--mono);font-size:16px;
   color:var(--ink);background:transparent;border:1px solid var(--line);border-radius:11px;padding:11px 12px;}
-.compose input[type="text"]::placeholder,.setsheet input[type="text"]::placeholder{color:var(--ink-soft);}
-.compose input[type="text"]:focus-visible,.setsheet input[type="text"]:focus-visible{outline:none;border-color:var(--ink);box-shadow:0 0 0 1px var(--ink);}
+.compose input[type="text"]::placeholder,.setsheet input[type="text"]::placeholder,#addbooth input[type="text"]::placeholder{color:var(--ink-soft);}
+.compose input[type="text"]:focus-visible,.setsheet input[type="text"]:focus-visible,#addbooth input[type="text"]:focus-visible{outline:none;border-color:var(--ink);box-shadow:0 0 0 1px var(--ink);}
 .flabel em{font-style:normal;opacity:.6;}
 .compose select{width:100%;font-family:var(--mono);font-size:16px;color:var(--ink);
   background:transparent;border:1px solid var(--line);border-radius:11px;
@@ -442,8 +446,13 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
   margin-top:24px;padding-bottom:8px;border-bottom:1px solid var(--line);}
 .shead h2{font-family:var(--serif);font-weight:400;font-size:22px;margin:0;letter-spacing:-.01em;}
 .shead span{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);}
+.shead-link{background:none;border:0;padding:0;cursor:pointer;font-family:var(--mono);
+  font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);
+  text-decoration:underline;text-underline-offset:3px;}
+.shead-link:hover{color:var(--ink);}
+.shead-link:focus-visible{outline:2px solid var(--ink);outline-offset:2px;}
 
-/* saved overflows sideways: columns of five, swipe for more. The next
+/* saved overflows sideways: columns of three, swipe for more. The next
    column peeks in from the right edge so the gesture explains itself. */
 #saved-body.cols{display:flex;gap:24px;overflow-x:auto;-webkit-overflow-scrolling:touch;
   scroll-snap-type:x mandatory;margin:0 -22px;padding:0 22px;
@@ -1012,7 +1021,7 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
       <div class="sub" id="profile-sub"></div>
     </div>
 
-    <div class="shead"><h2>Saved booths</h2><span id="saved-count"></span></div>
+    <div class="shead"><h2>Saved booths</h2><button class="shead-link" id="saved-more" hidden>view all</button></div>
     <div id="saved-body"></div>
 
     <div class="shead"><h2>Your strips</h2></div>
@@ -1132,6 +1141,33 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
     </div>
   </section>
 
+  <!-- add a booth: field-verified, reviewed before it goes live -->
+  <div class="scrim" id="addbooth-scrim"></div>
+  <section class="sheet" id="addbooth" aria-hidden="true" role="dialog" aria-label="Add a booth">
+    <div class="grab"></div>
+    <div class="sheet-head">
+      <div><h2>Add a booth</h2><span class="hood">spotted one we're missing?</span></div>
+    </div>
+    <label class="field" style="margin-top:14px;margin-bottom:0">
+      <span class="flabel">Where is it</span>
+      <input type="text" id="ab-name" maxlength="60" placeholder="bar, arcade, corner store…"
+             autocomplete="off" autocapitalize="off" spellcheck="false">
+    </label>
+    <span class="flabel" style="display:block;margin-top:14px">Location <em>logged in person</em></span>
+    <button class="src ab-src" id="ab-loc" type="button">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-5.4-6.5-10.3A6.5 6.5 0 0 1 12 4a6.5 6.5 0 0 1 6.5 6.7C18.5 15.6 12 21 12 21z"/><circle cx="12" cy="10.6" r="2.3"/></svg>
+      <span id="ab-loc-t">Log my location</span>
+    </button>
+    <span class="flabel" style="display:block;margin-top:14px">Photo <em>proof it exists</em></span>
+    <input type="file" id="ab-file" accept="image/*" capture="environment" hidden>
+    <button class="src ab-src" id="ab-snap" type="button">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 8.2h3l1.6-2.4h5.8l1.6 2.4h3v10.3h-15z"/><circle cx="12" cy="13" r="3.2"/></svg>
+      <span id="ab-snap-t">Snap the booth</span>
+    </button>
+    <p class="fhint">the photo verifies the booth · it never posts to the feed</p>
+    <button class="go" id="ab-submit" disabled>Submit for review</button>
+  </section>
+
   <!-- post a strip -->
   <div class="scrim" id="compose-scrim"></div>
   <section class="compose" id="compose" aria-hidden="true">
@@ -1199,6 +1235,10 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
     <div id="citylist"></div>
   </section>
 
+  <button class="fab" id="ab-open">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+    Add booth
+  </button>
   <button class="fab" id="fab">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13"/></svg>
     Post
@@ -3294,10 +3334,13 @@ function boothRow(b, extra){
     </span>
   </button>`;
 }
+let savedExpanded = false;
 function drawSaved(){
   const list = BOOTHS.filter(b=>saved.has(b.id));
   const body = document.getElementById('saved-body');
-  document.getElementById('saved-count').textContent = list.length ? `${list.length}` : '';
+  const more = document.getElementById('saved-more');
+  more.hidden = list.length <= 3;
+  more.textContent = savedExpanded ? 'show less' : 'view all';
   if(!list.length){
     body.classList.remove('cols');
     body.innerHTML = `<div class="empty"><p>Nothing saved yet.</p>
@@ -3305,19 +3348,22 @@ function drawSaved(){
     return;
   }
   const rows = list.map(b=>boothRow(b, STATUS_TEXT[b.status].toLowerCase()));
-  if(list.length <= 5){
-    // five or fewer: the plain vertical list, exactly as before
+  if(list.length <= 3 || savedExpanded){
     body.classList.remove('cols');
     body.innerHTML = rows.join('');
     return;
   }
-  // more than five: columns of five, swiped horizontally
+  // more than three: columns of three, swiped horizontally
   const cols = [];
-  for(let i = 0; i < rows.length; i += 5)
-    cols.push(`<div class="saved-col">${rows.slice(i, i+5).join('')}</div>`);
+  for(let i = 0; i < rows.length; i += 3)
+    cols.push(`<div class="saved-col">${rows.slice(i, i+3).join('')}</div>`);
   body.classList.add('cols');
   body.innerHTML = cols.join('');
 }
+document.getElementById('saved-more').addEventListener('click', ()=>{
+  savedExpanded = !savedExpanded;
+  drawSaved();
+});
 function stripGlyph(){
   return `<div class="glyph"><svg viewBox="0 0 44 52" aria-hidden="true">
     <g transform="rotate(-7 22 26)">
@@ -3838,6 +3884,7 @@ function showTab(name){
   });
   if(name!=='map'){ closeSheet(); toggleCitySheet(false); }
   document.getElementById('fab').classList.toggle('show', name==='social');
+  document.getElementById('ab-open').classList.toggle('show', name==='map');
   if(name!=='social'){ closeCompose(); closeComments(); }
   if(name==='social')  drawSocial();
   if(name==='profile') drawProfile();
@@ -4901,6 +4948,69 @@ function who(by){
   });
   /* prototype: reload stands in for the server-side wipe */
   $('set-del-yes').addEventListener('click',function(){location.reload();});
+})();
+
+
+/* ══ ADD A BOOTH — a field-verified request. Submitting takes a
+   live location fix and a photo: proof you're standing at a real
+   machine. Requests queue for review; nothing goes on the map
+   unmoderated. ══ */
+(function(){
+  var $=function(id){return document.getElementById(id);};
+  var lat=null, lng=null, photo=false;
+  var sheet=$('addbooth'), scrim=$('addbooth-scrim');
+  function sync(){ $('ab-submit').disabled = !(lat!==null && photo); }
+  function openAB(){
+    sheet.classList.add('open'); scrim.classList.add('open');
+    sheet.setAttribute('aria-hidden','false');
+  }
+  function closeAB(){
+    sheet.classList.remove('open'); scrim.classList.remove('open');
+    sheet.setAttribute('aria-hidden','true');
+  }
+  function resetAB(){
+    lat=null; lng=null; photo=false;
+    $('ab-name').value='';
+    $('ab-loc-t').textContent='Log my location';
+    $('ab-snap-t').textContent='Snap the booth';
+    $('ab-loc').classList.remove('ok'); $('ab-snap').classList.remove('ok');
+    sync();
+  }
+  $('ab-open').addEventListener('click', openAB);
+  scrim.addEventListener('click', closeAB);
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeAB(); });
+
+  $('ab-loc').addEventListener('click', function(){
+    $('ab-loc-t').textContent='Getting a fix…';
+    if(!navigator.geolocation){
+      $('ab-loc-t').textContent='No location here. Try on your phone.';
+      return;
+    }
+    navigator.geolocation.getCurrentPosition(function(pos){
+      lat=pos.coords.latitude; lng=pos.coords.longitude;
+      $('ab-loc-t').textContent='Pinned · '+lat.toFixed(4)+', '+lng.toFixed(4);
+      $('ab-loc').classList.add('ok');
+      sync();
+    }, function(){
+      $('ab-loc-t').textContent='Couldn\u2019t get a fix. Try again.';
+    }, {enableHighAccuracy:true, timeout:8000, maximumAge:30000});
+  });
+
+  $('ab-snap').addEventListener('click', function(){ $('ab-file').click(); });
+  $('ab-file').addEventListener('change', function(){
+    if(this.files && this.files.length){
+      photo=true;
+      $('ab-snap-t').textContent='Photo attached';
+      $('ab-snap').classList.add('ok');
+      sync();
+    }
+  });
+
+  $('ab-submit').addEventListener('click', function(){
+    /* server-era: booth_submissions row + private photo upload */
+    toast('Sent. We\u2019ll take a look before it goes live.');
+    closeAB(); resetAB();
+  });
 })();
 
 
