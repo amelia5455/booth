@@ -848,7 +848,7 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
    reserve doubles as the gap: what follows hugs it (margin 0). */
 #ob .oberr{min-height:19px;margin:8px 0 0;font-family:var(--mono);
   font-size:12px;line-height:1.55;color:var(--err);}
-#ob .oberr+.fhint,#ob .oberr+.resend{margin-top:0;}
+#ob .fwrap+.fhint{margin-top:12px;}
 
 #ob .resend{margin:12px 0 0;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);}
 #ob .resend+.resend{margin-top:4px;}
@@ -1280,8 +1280,8 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
           <input id="ob-phone" type="tel" inputmode="numeric" autocomplete="tel-national"
                  placeholder="(206) 555-0134" aria-describedby="ob-phone-hint">
         </div>
-        <p class="oberr" id="ob-phoneerr" role="alert" aria-live="assertive"></p>
         <p class="fhint" id="ob-phone-hint">used to sign you in · never for marketing<br>msg &amp; data rates may apply</p>
+        <p class="oberr" id="ob-phoneerr" role="alert" aria-live="assertive"></p>
         <div class="spacer"></div>
         <button class="obgo" id="ob-go-phone" disabled>Text me the code</button>
       </section>
