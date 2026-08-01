@@ -1292,9 +1292,11 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
           <input type="text" inputmode="numeric" maxlength="6" aria-label="Digit 5 of 6">
           <input type="text" inputmode="numeric" maxlength="6" aria-label="Digit 6 of 6">
         </div>
-        <p class="oberr" id="ob-codeerr" role="alert" aria-live="assertive"></p>
         <p class="resend">code expires in <span id="ob-exp-t">5:00</span></p>
         <p class="resend">didn't get it? <button id="ob-resend" disabled>resend <span id="ob-rs-t">0:24</span></button></p>
+        <!-- the failure line sits under the timers: its reserve borrows
+             from the flexible space below, so errors never shift a thing -->
+        <p class="oberr" id="ob-codeerr" role="alert" aria-live="assertive"></p>
         <div class="spacer"></div>
         <p class="fhint demo">prototype · 000000 is wrong · 111111 expires the code instantly · anything else works</p>
         <button class="obgo" id="ob-go-code" disabled>Verify</button>
