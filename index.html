@@ -431,7 +431,8 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
 #reportsheet{z-index:800;}
 #reportsheet .replist{margin-top:12px;}
 /* reasons speak in the interface voice, not the display voice */
-#reportsheet .cityrow{padding:14px 12px;}
+#reportsheet .cityrow{padding:14px 12px;border-radius:0;}
+#reportsheet .cityrow+.cityrow{border-top:1px solid var(--line);}
 #reportsheet .cityrow .n{font-family:var(--mono);font-size:13px;line-height:1.4;}
 #reportsheet .repnote{margin:16px 0 8px;font-family:var(--mono);font-size:12px;
   line-height:1.55;color:var(--ink);}
