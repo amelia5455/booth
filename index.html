@@ -813,7 +813,7 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
   color:var(--ink-soft);line-height:1.7;}
 #ob .count{margin-top:8px;text-align:right;font-size:9px;letter-spacing:.1em;color:var(--ink-soft);}
 
-#ob .obcrow{display:flex;align-items:center;gap:14px;margin-top:24px;}
+#ob .obcrow{display:flex;align-items:center;gap:14px;margin-top:0;}
 #ob .sws{display:flex;gap:10px;flex-wrap:wrap;}
 #ob .sw{width:34px;height:34px;border-radius:50%;cursor:pointer;padding:0;
   background:var(--c);border:1px solid var(--line);transition:box-shadow .15s;}
@@ -892,7 +892,8 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
   font-size:12px;line-height:1.4;}
 #ob .namerow .count{margin-top:0;flex:0 0 auto;}
 /* suggested alternates — the app's pill language, one size down */
-#ob .alts{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;min-height:0;}
+#ob .alts{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;min-height:0;}
+#ob .alts:empty{margin-top:0;} /* an empty pill row shouldn't hold space */
 #ob .alts button{border:1px solid var(--line);background:var(--paper);color:var(--ink);
   font-family:var(--mono);font-size:10px;letter-spacing:.05em;
   padding:7px 12px;border-radius:100px;cursor:pointer;transition:background .15s,color .15s;}
@@ -1306,6 +1307,7 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
       <section class="screen" id="ob-s-name" aria-hidden="true">
         <h1>Pick a name.</h1>
         <span class="obsub">shown on booths you save &amp; strips you post</span>
+        <div style="height:12px"></div>
         <label class="flabel" for="ob-dname">Display name</label>
         <div class="fwrap" id="ob-dwrap">
           <input id="ob-dname" type="text" maxlength="24" placeholder="enter a name"
