@@ -886,7 +886,7 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
   <!-- strips: your library, kept private -->
   <section class="panel" id="panel-social" aria-hidden="true">
     <h1>Strips</h1>
-    <div class="sub">your collection, booth by booth</div>
+    <div class="sub">a record of the booths you’ve visited</div>
     <div id="social-body"></div>
   </section>
 
@@ -3374,10 +3374,6 @@ function deleteStrip(boothId, index){
 function drawSocial(){
   /* the wall: your strips hung as objects, nothing else */
   const mine = allStrips().filter(s => s.by === 'you');
-  const booths = new Set(mine.map(s => s.booth.id)).size;
-  document.querySelector('#panel-social .sub').textContent = mine.length
-    ? `${mine.length} strip${mine.length===1?'':'s'} \u00b7 ${booths} booth${booths===1?'':'s'}`
-    : 'your collection, booth by booth';
   document.getElementById('social-body').innerHTML = mine.length
     ? `<div class="wall">${mine.map(s =>
         `<button data-view="${s.booth.id}:${s.i}" aria-label="Strip from ${esc(s.booth.name)}"><img src="${s.src}" alt=""></button>`
