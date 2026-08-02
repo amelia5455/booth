@@ -421,14 +421,13 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
 
 /* ── THE WALL ───────────────────────────────────────────
    Strips hang like prints in a gallery: each one mounted on a slim
-   paper mat with a real shadow, the middle column dropped a little —
-   a salon hang, not a spreadsheet. The mat crops every upload to one
-   shape so the wall keeps a rhythm; the viewer shows the whole photo. */
+   paper mat with a real shadow, every row hung level. The mat crops
+   every upload to one shape so the wall keeps a rhythm; the viewer
+   shows the whole photo. */
 .wall{display:grid;grid-template-columns:repeat(3,1fr);gap:22px 14px;
   align-items:start;padding:18px 2px 8px;}
 .wall button{background:var(--paper);border:0;padding:5px 5px 7px;cursor:pointer;display:block;
   border-radius:1px;box-shadow:0 10px 22px rgba(27,26,22,.20), 0 2px 5px rgba(27,26,22,.12);}
-.wall button:nth-child(3n+2){margin-top:16px;}
 .wall img{display:block;width:100%;aspect-ratio:3/4;object-fit:cover;object-position:center;}
 .wall button:focus-visible{outline:2px solid var(--ink);outline-offset:4px;}
 
