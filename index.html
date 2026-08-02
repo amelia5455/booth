@@ -260,61 +260,6 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
   opacity:0;visibility:hidden;transition:opacity .28s, visibility .28s;}
 .scrim.open{opacity:1;visibility:visible;}
 
-/* comments live in a bottom sheet, IG-style structurally but in the app's
-   own voice: paper, serif comments, mono labels, doodle-heart likes */
-.cmtsheet{position:absolute;left:8px;right:8px;z-index:790;
-  bottom:calc(var(--nav-h) + var(--safe) + var(--nav-gap) + 8px);
-  max-height:62%;display:flex;flex-direction:column;
-  background:var(--paper);border:1px solid var(--line);border-radius:20px;
-  box-shadow:0 12px 34px rgba(27,26,22,.16);padding:14px 20px 16px;
-  transform:translateY(130%);visibility:hidden;pointer-events:none;
-  transition:transform .32s cubic-bezier(.2,.8,.2,1), visibility .32s;}
-.cmtsheet.open{transform:translateY(0);visibility:visible;pointer-events:auto;}
-.cmtsheet .grab{cursor:grab;}
-.cmtsheet.dragging{transition:none;}
-.cmt-head{display:flex;align-items:center;gap:10px;margin-bottom:6px;}
-.cmt-head h2{font-family:var(--serif);font-weight:400;font-size:24px;margin:0;}
-.cmt-count{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);padding-top:5px;}
-
-.cmt-list{flex:1 1 auto;overflow-y:auto;-webkit-overflow-scrolling:touch;
-  scrollbar-width:none;padding:4px 0 8px;min-height:70px;}
-.cmt-list::-webkit-scrollbar{display:none;}
-.cmt-item{display:flex;gap:11px;padding:9px 0;align-items:center;}
-.cmt-item .post-av{flex:0 0 30px;height:30px;display:grid;place-items:center;}
-.cmt-item .post-av svg{height:19px;}
-.cmt-body{flex:1;min-width:0;}
-.cmt-byline{display:flex;gap:8px;align-items:baseline;}
-.cmt-by{font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--ink);}
-.cmt-text{font-family:var(--mono);font-size:12px;line-height:1.55;margin:2px 0 0;}
-.cmt-like{flex:0 0 auto;background:none;border:0;cursor:pointer;padding:6px;color:var(--ink-soft);display:grid;place-items:center;align-self:center;}
-.cmt-like svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.6;
-  stroke-linecap:round;stroke-linejoin:round;}
-.cmt-like.on{color:var(--me-deep);}
-.cmt-like.on svg{fill:var(--me);stroke:var(--me-deep);}
-.cmt-empty{font-family:var(--serif);font-size:18px;color:var(--ink-soft);
-  text-align:center;padding:22px 0 14px;}
-
-/* one-tap doodle reactions above the input, standing in for the emoji row */
-.cmt-quick{display:flex;gap:6px;padding:8px 0 10px;border-top:1px solid var(--line);
-  overflow-x:auto;scrollbar-width:none;}
-.cmt-quick::-webkit-scrollbar{display:none;}
-.cmt-quick button{background:none;border:1px solid var(--line);border-radius:100px;
-  cursor:pointer;height:34px;padding:0 13px;display:inline-flex;align-items:center;
-  flex:0 0 auto;white-space:nowrap;
-  font-family:var(--mono);font-size:12px;line-height:1;color:var(--ink);
-  transition:background .15s,border-color .15s;}
-.cmt-quick button:hover{border-color:rgba(27,26,22,.32);background:rgba(27,26,22,.03);}
-
-.cmt-bar{display:flex;gap:10px;align-items:center;}
-.cmt-bar input{flex:1;min-width:0;background:transparent;height:40px;
-  border:1px solid var(--line);border-radius:100px;padding:0 15px;box-sizing:border-box;
-  font-family:var(--mono);font-size:16px;line-height:38px;color:var(--ink);}
-.cmt-bar input::placeholder{font-family:var(--mono);font-size:11px;line-height:38px;color:var(--ink-soft);}
-.cmt-bar input:focus{outline:none;border-color:rgba(27,26,22,.35);}
-.cmt-bar button{background:var(--ink);color:var(--paper);border:0;border-radius:100px;
-  cursor:pointer;height:40px;padding:0 16px 0 17px;display:inline-flex;align-items:center;justify-content:center;
-  font-family:var(--mono);font-size:10px;line-height:1;letter-spacing:.1em;text-transform:uppercase;}
-.cmt-bar button:disabled{opacity:.3;}
 
 .citysheet{position:absolute;left:8px;right:8px;z-index:780;
   bottom:calc(var(--nav-h) + var(--safe) + var(--nav-gap) + 8px);
@@ -423,19 +368,6 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
 .setsheet .rowbtn:focus-visible{outline:2px solid var(--ink);outline-offset:2px;border-radius:4px;}
 .setsheet .vfoot{margin:24px 0 0;text-align:center;font-family:var(--mono);font-size:9px;
   letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);}
-.setsheet .brow{display:flex;align-items:center;justify-content:space-between;gap:12px;
-  margin-top:8px;}
-.setsheet .brow .bn{font-family:var(--mono);font-size:13px;color:var(--ink);}
-
-/* report / block sheet rides above the panels, like settings */
-#reportsheet{z-index:800;}
-#reportsheet .replist{margin-top:12px;}
-/* reasons speak in the interface voice, not the display voice */
-#reportsheet .cityrow{padding:14px 12px;border-radius:0;}
-#reportsheet .cityrow+.cityrow{border-top:1px solid var(--line);}
-#reportsheet .cityrow .n{font-family:var(--mono);font-size:13px;line-height:1.4;}
-#reportsheet .repnote{margin:16px 0 8px;font-family:var(--mono);font-size:12px;
-  line-height:1.55;color:var(--ink);}
 .setsheet .avail{display:block;margin-top:8px;font-family:var(--mono);font-size:11px;
   color:var(--ink-soft);min-height:15px;}
 .setsheet .avail.bad{color:var(--err);}
@@ -1061,33 +993,7 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
   </section>
 
   <!-- report a strip / block a person -->
-  <div class="scrim" id="report-scrim"></div>
-  <section class="sheet" id="reportsheet" aria-hidden="true" role="dialog" aria-label="Report">
-    <div class="grab"></div>
-    <div id="rep-pick">
-      <div class="sheet-head">
-        <div><h2>Report</h2><span class="hood">it stays anonymous</span></div>
-      </div>
-      <div class="replist" id="rep-reasons"></div>
-    </div>
-    <div id="rep-done" hidden>
-      <div class="sheet-head">
-        <div><h2>Thanks.</h2><span class="hood">we’ll take a look</span></div>
-      </div>
-      <p class="repnote">That strip is hidden from your feed while we do.</p>
-      <button class="go" id="rep-close">Done</button>
-    </div>
-    <div id="rep-block" hidden>
-      <div class="sheet-head">
-        <div><h2 id="rep-block-t">Block?</h2><span class="hood">they won’t know</span></div>
-      </div>
-      <p class="repnote">You won’t see their strips or comments anywhere.</p>
-      <div class="srow">
-        <button class="go go-ghost" id="rep-block-no">Cancel</button>
-        <button class="go" id="rep-block-yes">Block</button>
-      </div>
-    </div>
-  </section>
+</section>
 
   <!-- add a booth: field-verified, reviewed before it goes live -->
   <div class="scrim" id="addbooth-scrim"></div>
@@ -1190,22 +1096,7 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
       <button class="btn-solid" id="c-post" disabled>Save</button>
     </div>
   </section>
-
-  <!-- comments sheet -->
-  <div class="scrim" id="cmt-scrim"></div>
-  <section class="cmtsheet" id="cmtsheet" aria-hidden="true">
-    <div class="grab"></div>
-    <div class="cmt-head">
-      <h2>Comments</h2>
-      <span class="cmt-count" id="cmt-count"></span>
-    </div>
-    <div class="cmt-list" id="cmt-list"></div>
-    <div class="cmt-quick" id="cmt-quick"></div>
-    <div class="cmt-bar">
-      <input type="text" id="cmt-input" maxlength="140" placeholder="Join the conversation">
-      <button id="cmt-send">Post</button>
-    </div>
-  </section>
+</section>
 
   <section class="citysheet" id="citysheet" role="listbox" aria-label="Choose a city">
     <div class="grab"></div>
@@ -3285,7 +3176,7 @@ function closeSheet(){
   activeId = null;
 }
 map.on('click', ()=>{ closeSheet(); toggleCitySheet(false); creditEl.classList.remove('open'); });
-document.addEventListener('keydown', e=>{ if(e.key==='Escape'){ closeSheet(); toggleCitySheet(false); closeCompose(); closeComments(); showTab('map'); }});
+document.addEventListener('keydown', e=>{ if(e.key==='Escape'){ closeSheet(); toggleCitySheet(false); closeCompose(); showTab('map'); }});
 
 /* save toggle */
 document.getElementById('s-save').addEventListener('click', ()=>{
@@ -3353,19 +3244,6 @@ function stripGlyph(){
 function allStrips(){
   return BOOTHS.flatMap(b => b.strips.map((s,i) => ({...s, booth:b, i})));
 }
-// both icons normalised to the same optical height (15.6) and centred on
-// the viewBox; the scale is cancelled in stroke-width so weights stay equal
-const HEART  = '<g transform="translate(-0.459,-2.144) scale(1.04)"><path stroke-width="1.442" d="M12 20.4s-7.6-4.7-7.6-9.7A4.45 4.45 0 0 1 12 8.2a4.45 4.45 0 0 1 7.6 2.5c0 5-7.6 9.7-7.6 9.7z"/></g>';
-const BUBBLE = '<g transform="translate(1.166,1.075) scale(0.9043)"><path stroke-width="1.659" d="M20.4 11.5c0 4-3.75 7.3-8.4 7.3a10 10 0 0 1-2.6-.34L4.6 20l1.3-3.55A7 7 0 0 1 3.6 11.5c0-4 3.75-7.3 8.4-7.3s8.4 3.3 8.4 7.3z"/></g>';
-
-/* a strip written before likes/comments existed still renders */
-function norm(s){
-  s.likes = s.likes || 0;
-  s.liked = !!s.liked;
-  s.comments = s.comments || [];
-  return s;
-}
-
 /* the viewer: tap a strip on the wall to take it down */
 const svsheet = document.getElementById('stripview');
 const svscrim = document.getElementById('sv-scrim');
@@ -3480,82 +3358,11 @@ function uiScale(){
   return app.getBoundingClientRect().width / app.offsetWidth || 1;
 }
 
-function clusterOnPanel(fromEl, clientX, clientY, opts){
-  const panel = fromEl.closest('.panel');
-  if(!panel) return;
-  const p = panel.getBoundingClientRect(), s = uiScale();
-  heartCluster(panel,
-    (clientX - p.left) / s + panel.scrollLeft,
-    (clientY - p.top)  / s + panel.scrollTop,
-    opts);
-}
 
-function strip(key){
-  const [id, i] = key.split(':');
-  const b = BOOTHS.find(x => x.id === id);
-  return b ? norm(b.strips[Number(i)]) : null;
-}
 function refeed(){ drawSocial(); drawProfile(); }
 
-function toggleLike(key, forceOn){
-  const s = strip(key); if(!s) return;
-  const on = forceOn === undefined ? !s.liked : forceOn;
-  if(on === s.liked) return;
-  s.liked = on;
-  s.likes = Math.max(0, s.likes + (on ? 1 : -1));
-  refeed();
-}
-
-document.body.addEventListener('click', e=>{
-  const like = e.target.closest('[data-like]');
-  if(like){
-    const key = like.dataset.like;
-    const s = strip(key);
-    const liking = s && !s.liked;
-    if(liking){
-      const r = like.getBoundingClientRect();
-      clusterOnPanel(like, r.left + r.width/2, r.top + r.height/2, {big:false});
-      like.classList.add('pop');   // cosmetic; the re-render replaces it anyway
-    }
-    toggleLike(key);
-    return;
-  }
-
-  const cmt = e.target.closest('[data-cmt]');
-  if(cmt){ addComment(cmt.dataset.cmt); return; }
-
-  const opener = e.target.closest('[data-comments], [data-focus]');
-  if(opener){ openComments(opener.dataset.comments || opener.dataset.focus); return; }
-});
-
-/* double-tap the photo to like, the way everyone already expects */
-let lastTap = {key:null, t:0};
-document.body.addEventListener('click', e=>{
-  const img = e.target.closest('[data-liketap]');
-  if(!img) return;
-  const key = img.dataset.liketap, now = Date.now();
-  if(lastTap.key === key && now - lastTap.t < 400){
-    lastTap = {key:null, t:0};
-    clusterOnPanel(img, e.clientX, e.clientY);
-    toggleLike(key, true);
-  } else {
-    lastTap = {key, t:now};
-  }
-});
 
 
-/* the ... menu: one open at a time, closes on any outside tap */
-function closeMenus(){
-  document.querySelectorAll('.post-menu.open').forEach(m=>m.classList.remove('open'));
-  document.querySelectorAll('.post-dots[aria-expanded="true"]').forEach(b=>b.setAttribute('aria-expanded','false'));
-  disarmDeletes();
-}
-function disarmDeletes(){
-  document.querySelectorAll('.post-menu .danger.arm').forEach(b=>{
-    b.classList.remove('arm');
-    b.textContent = 'Delete post';
-  });
-}
 function deleteStrip(boothId, index){
   const b = BOOTHS.find(x => x.id === boothId);
   if(!b || !b.strips[index]) return;
@@ -3563,103 +3370,7 @@ function deleteStrip(boothId, index){
   // status is left alone on purpose: removing a photo doesn't un-verify a booth
   render(); refeed();
 }
-document.body.addEventListener('click', e=>{
-  const dots = e.target.closest('[data-menu]');
-  if(dots){
-    const menu = document.querySelector(`.post-menu[data-menufor="${dots.dataset.menu}"]`);
-    const opening = !menu.classList.contains('open');
-    closeMenus();
-    if(opening){ menu.classList.add('open'); dots.setAttribute('aria-expanded','true'); }
-    return;
-  }
 
-  const del = e.target.closest('[data-del]');
-  if(del){
-    if(!del.classList.contains('arm')){
-      disarmDeletes();
-      del.classList.add('arm');
-      del.textContent = 'Tap again to delete';
-      return;
-    }
-    const [boothId, index] = del.dataset.del.split(':');
-    deleteStrip(boothId, Number(index));   // re-render closes the menu with it
-    return;
-  }
-
-  const rep = e.target.closest('[data-report]');
-  if(rep){ openReport(rep.dataset.report); return; }
-
-  const blk = e.target.closest('[data-block]');
-  if(blk){ openBlock(blk.dataset.block); return; }
-
-  if(!e.target.closest('.post-menu')) closeMenus();
-}, true);
-document.addEventListener('keydown', e=>{ if(e.key==='Escape'){ closeMenus(); closeReport(); } });
-
-
-/* ================================================================
-   REPORT + BLOCK — the feed's exits. Reporting hides the strip
-   for you and (server-era) flags it for review; blocking removes
-   a person from your feed and comments without telling them.
-   In-memory, like saves. Both are App Store table stakes for UGC.
-   ================================================================ */
-var reported = new Set(), blocked = new Set();
-const REASONS = [
-  'It’s not from a photobooth',
-  'Someone in it didn’t agree to be posted',
-  'It’s spam or an ad',
-  'It’s hateful or explicit',
-  'Something else'
-];
-let repKey = null, blockWho = null;
-
-function repState(state){
-  document.getElementById('rep-pick').hidden  = state !== 'pick';
-  document.getElementById('rep-done').hidden  = state !== 'done';
-  document.getElementById('rep-block').hidden = state !== 'block';
-}
-function openReport(key){
-  closeMenus();
-  repKey = key;
-  document.getElementById('rep-reasons').innerHTML = REASONS.map((r,i)=>
-    `<button type="button" class="cityrow" data-reason="${i}"><span class="n">${r}</span></button>`).join('');
-  repState('pick');
-  document.getElementById('reportsheet').classList.add('open');
-  document.getElementById('report-scrim').classList.add('open');
-  document.getElementById('reportsheet').setAttribute('aria-hidden','false');
-}
-function openBlock(by){
-  closeMenus();
-  blockWho = by;
-  document.getElementById('rep-block-t').textContent = `Block ${who(by)}?`;
-  repState('block');
-  document.getElementById('reportsheet').classList.add('open');
-  document.getElementById('report-scrim').classList.add('open');
-  document.getElementById('reportsheet').setAttribute('aria-hidden','false');
-}
-function closeReport(){
-  document.getElementById('reportsheet').classList.remove('open');
-  document.getElementById('report-scrim').classList.remove('open');
-  document.getElementById('reportsheet').setAttribute('aria-hidden','true');
-}
-document.getElementById('reportsheet').addEventListener('click', e=>{
-  const r = e.target.closest('[data-reason]');
-  if(r){
-    /* the reason itself matters server-side; here the act is the point */
-    reported.add(repKey);
-    drawSocial();
-    repState('done');
-  }
-});
-document.getElementById('rep-close').addEventListener('click', closeReport);
-document.getElementById('rep-block-no').addEventListener('click', closeReport);
-document.getElementById('rep-block-yes').addEventListener('click', ()=>{
-  blocked.add(blockWho);
-  drawSocial();
-  closeReport();
-  toast(`Blocked ${who(blockWho)}.`);
-});
-document.getElementById('report-scrim').addEventListener('click', closeReport);
 
 function drawSocial(){
   /* the wall: your strips hung as objects, nothing else */
@@ -3695,129 +3406,6 @@ document.body.addEventListener('click', e=>{
 
 
 /* ================================================================
-   COMMENTS SHEET — opens from the bubble icon or "view all"
-   ================================================================ */
-const cmtsheet = document.getElementById('cmtsheet');
-let cmtKey = null;
-
-const QUICK = ['so cute', 'need to go', 'the light!!', 'ok icon'];
-
-function openComments(key){
-  cmtKey = key;
-  toggleCitySheet(false); closeSheet(); closeMenus();
-  drawComments();
-  document.getElementById('cmt-quick').innerHTML =
-    QUICK.map(q=>`<button data-quick="${q}">${q}</button>`).join('');
-  cmtsheet.classList.add('open');
-  cmtsheet.setAttribute('aria-hidden','false');
-  document.getElementById('cmt-scrim').classList.add('open');
-}
-function closeComments(){
-  cmtKey = null;
-  cmtsheet.classList.remove('open');
-  cmtsheet.setAttribute('aria-hidden','true');
-  document.getElementById('cmt-scrim').classList.remove('open');
-}
-function drawComments(){
-  const s = strip(cmtKey);
-  if(!s) return;
-  /* keep original indices for like targets while blocked voices sit out */
-  const vis = s.comments.map((c,i)=>({c,i})).filter(x=>!blocked.has(x.c.by));
-  const n = vis.length;
-  document.getElementById('cmt-count').textContent = n ? `${n}` : '';
-  document.getElementById('cmt-list').innerHTML = n
-    ? vis.map(({c,i})=>`
-      <div class="cmt-item">
-        <span class="post-av${c.by==='you' ? ' me' : ''}"><svg viewBox="6.4 2.4 36.5 49"><use href="#booth-shape" x="2" y="2" width="48" height="52"/></svg></span>
-        <span class="cmt-body">
-          <span class="cmt-byline"><span class="cmt-by">${esc(who(c.by))}</span></span>
-          <p class="cmt-text">${esc(c.text)}</p>
-        </span>
-        <button class="cmt-like${c.liked?' on':''}" data-cmtlike="${i}" aria-pressed="${!!c.liked}" aria-label="Like comment">
-          ${DOODLE_HEARTS[i % DOODLE_HEARTS.length]}
-        </button>
-      </div>`).join('')
-    : `<div class="cmt-empty">No comments yet. Say something.</div>`;
-}
-function sendComment(text){
-  const s = strip(cmtKey);
-  const t = (text || '').trim();
-  if(!s || !t) return;
-  /* same contract as posting: failure never eats the words */
-  if(netFails(t)){
-    toast('Couldn\u2019t post that comment. It\u2019s still in the bar.', true);
-    return;
-  }
-  s.comments.push({by:'you', text:t});
-  document.getElementById('cmt-input').value = '';
-  syncCmtSend();
-  drawComments(); refeed();
-  const list = document.getElementById('cmt-list');
-  list.scrollTop = list.scrollHeight;
-}
-/* an empty Post button that does nothing silently is a mystery;
-   a disabled one is an answer */
-function syncCmtSend(){
-  const inp = document.getElementById('cmt-input');
-  document.getElementById('cmt-send').disabled = !inp.value.trim();
-}
-document.getElementById('cmt-input').addEventListener('input', syncCmtSend);
-syncCmtSend();
-
-
-/* tap outside, or swipe the sheet down, to dismiss */
-document.getElementById('cmt-scrim').addEventListener('click', closeComments);
-
-(function(){
-  let startY = 0, dy = 0, dragging = false, fromList = false;
-  const list = () => document.getElementById('cmt-list');
-
-  cmtsheet.addEventListener('touchstart', e=>{
-    startY = e.touches[0].clientY;
-    dy = 0;
-    // dragging from inside the list only counts once the list is at its top,
-    // otherwise the gesture is a scroll and the sheet must not move
-    fromList = !!e.target.closest('.cmt-list');
-    dragging = true;
-  }, {passive:true});
-
-  cmtsheet.addEventListener('touchmove', e=>{
-    if(!dragging) return;
-    dy = e.touches[0].clientY - startY;
-    if(dy < 0) dy = 0;
-    if(fromList && list().scrollTop > 0){ dy = 0; startY = e.touches[0].clientY; return; }
-    if(dy > 0){
-      cmtsheet.classList.add('dragging');
-      cmtsheet.style.transform = `translateY(${dy}px)`;
-    }
-  }, {passive:true});
-
-  cmtsheet.addEventListener('touchend', ()=>{
-    if(!dragging) return;
-    dragging = false;
-    cmtsheet.classList.remove('dragging');
-    cmtsheet.style.transform = '';
-    if(dy > 90) closeComments();   // past the threshold: let it go
-  });
-})();
-
-document.getElementById('cmt-send').addEventListener('click', ()=>
-  sendComment(document.getElementById('cmt-input').value));
-document.getElementById('cmt-input').addEventListener('keydown', e=>{
-  if(e.key === 'Enter') sendComment(e.target.value);
-});
-cmtsheet.addEventListener('click', e=>{
-  const q = e.target.closest('[data-quick]');
-  if(q){ sendComment(q.dataset.quick); return; }
-  const cl = e.target.closest('[data-cmtlike]');
-  if(cl){
-    const s = strip(cmtKey);
-    const c = s && s.comments[Number(cl.dataset.cmtlike)];
-    if(c){ c.liked = !c.liked; drawComments(); }
-  }
-});
-
-/* ================================================================
    7. TABS
    ================================================================ */
 
@@ -3849,7 +3437,7 @@ function showTab(name){
   if(name!=='map'){ closeSheet(); toggleCitySheet(false); }
   document.getElementById('fab').classList.toggle('show', name==='social');
   document.getElementById('ab-open').classList.toggle('show', name==='map');
-  if(name!=='social'){ closeCompose(); closeComments(); }
+  if(name!=='social'){ closeCompose(); }
   if(name==='social')  drawSocial();
   if(name==='profile') drawProfile();
   movePill();
@@ -4109,10 +3697,7 @@ function postStrip(){
     src:     pendingSrc,
     date:    new Date().toLocaleDateString(undefined,{month:'short', year:'2-digit'}),
     by:      'you',
-    caption: cap,
-    likes:   0,
-    liked:   false,
-    comments: []
+    caption: cap
   });
 
   closeCompose();
@@ -4137,19 +3722,14 @@ document.getElementById('fab').addEventListener('click', ()=> openCompose());
    The flow runs in the #ob overlay above the app (the map and data
    initialize underneath it). Finishing sign-up hands two things to
    the app:
-     · display name  → the You tab header, your bylines in the feed
-                       and in comments (data keeps by:'you' as the
-                       ownership marker; who() translates at render)
+     · display name  → the You tab header (data keeps by:'you'
+                       as the ownership marker)
      · booth color   → --me / --me-deep, worn by YOUR booth avatar
                        on the profile and on your posts. The app's
                        chrome stays ink-and-paper — the color is
                        yours, not the UI's.
    Session-only on purpose, same stance as `saved` above.
    ================================================================ */
-function who(by){
-  return by === 'you' ? (window.__meName || 'you') : (by || 'someone');
-}
-
 (function(){
   var steps=['ob-s-start','ob-s-phone','ob-s-code','ob-s-name','ob-s-loc','ob-s-done'];
   var cur=0, phone='', mode='signup';
