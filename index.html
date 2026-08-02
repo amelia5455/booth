@@ -487,52 +487,25 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
 .empty p{font-family:var(--serif);font-size:21px;line-height:1.35;margin:0 0 6px;}
 .empty span{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);}
 
-/* ── POSTS ──────────────────────────────────────────────
-   Full-width feed cards. Photo strips are tall and narrow, so the
-   image is contained on a backdrop rather than cropped — cropping a
-   4-frame strip to a square throws away half the point of it. */
-.post{padding:14px 0 20px;margin:0 -22px;border-top:1px solid var(--line);}
-.post:first-child{border-top:0;padding-top:4px;}
-.post-head{display:flex;align-items:center;gap:10px;padding:12px 22px 11px;}
-.post-av{flex:0 0 34px;height:34px;border-radius:50%;background:var(--paper);
-  border:1px solid var(--line);display:grid;place-items:center;color:var(--ink);}
-.post-av svg{height:22px;width:auto;display:block;}
-.post-who{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;}
-.post-by{background:none;border:0;padding:0;font:inherit;font-size:13px;font-weight:500;
-  color:var(--ink);text-align:left;cursor:pointer;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.post-by:hover{text-decoration:underline;}
-.post-at{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;
-  margin-top:3px;line-height:1.3;text-align:left;color:var(--ink-soft);
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.post-more{flex:0 0 auto;position:relative;}
-.post-dots{background:none;border:0;cursor:pointer;padding:8px 6px;color:var(--ink-soft);
-  display:grid;place-items:center;align-self:center;}
-.post-dots svg{width:17px;height:17px;fill:currentColor;}
-.post-dots:hover{color:var(--ink);}
-.post-dots:focus-visible{outline:2px solid var(--ink);outline-offset:2px;border-radius:8px;}
+/* ── THE WALL ───────────────────────────────────────────
+   Strips hang like pictures in a gallery: free objects on the
+   ground, a real shadow, no chrome around them. The middle column
+   drops a little — a salon hang, not a spreadsheet. Tap a strip
+   to take it off the wall. */
+.wall{display:grid;grid-template-columns:repeat(3,1fr);gap:28px 16px;
+  align-items:start;padding:18px 2px 8px;}
+.wall button{background:none;border:0;padding:0;cursor:pointer;display:block;}
+.wall button:nth-child(3n+2){margin-top:24px;}
+.wall img{display:block;width:100%;height:auto;border-radius:1px;
+  box-shadow:0 10px 22px rgba(27,26,22,.20), 0 2px 5px rgba(27,26,22,.12);}
+.wall button:focus-visible{outline:2px solid var(--ink);outline-offset:4px;}
 
-/* one menu per post; items differ by whether the post is yours */
-.post-menu{position:absolute;right:0;top:calc(100% + 4px);z-index:600;min-width:168px;
-  background:var(--paper);border:1px solid var(--line);border-radius:13px;
-  box-shadow:0 10px 26px rgba(27,26,22,.16);padding:5px;display:none;}
-.post-menu.open{display:block;}
-.post-menu button{display:block;width:100%;text-align:left;background:none;border:0;
-  cursor:pointer;border-radius:9px;padding:10px 12px;
-  font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;
-  color:var(--ink);}
-.post-menu button:hover{background:rgba(27,26,22,.05);}
-.post-menu button:focus-visible{outline:2px solid var(--ink);outline-offset:-2px;}
-.post-menu .danger{color:var(--err);}
-.post-menu .danger.arm{background:var(--err);color:var(--paper);}
-
-/* the photo owns its frame edge-to-edge. Capped between 4:5 and a strip-ish
-   3:4-plus so one post can't take the whole viewport; inside that window the
-   image keeps its own shape, past it we cover-crop. */
-.post-img{position:relative;background:var(--paper);border-block:1px solid var(--line);
-  cursor:pointer;user-select:none;overflow:hidden;}
-.post-img img{display:block;width:100%;height:auto;max-height:480px;
-  object-fit:cover;object-position:center;}
+/* one strip off the wall: the viewer sheet */
+.svsheet img{display:block;margin:4px auto 16px;max-width:100%;max-height:380px;width:auto;
+  border-radius:1px;box-shadow:0 14px 30px rgba(27,26,22,.22), 0 3px 7px rgba(27,26,22,.12);}
+.sv-cap{margin:10px 0 0;font-family:var(--mono);font-size:12px;line-height:1.55;color:var(--ink);}
+.svsheet .go-ghost{color:var(--err);}
+.svsheet .go-ghost.arm{background:var(--err);border-color:var(--err);color:var(--paper);}
 /* ── LIKE CLUSTER ─────────────────────────────────────
    Small doodle hearts in like-red (--heart), the same for every
    profile. Each heart is a wobbly hand-drawn
@@ -553,39 +526,6 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
   78%{opacity:1}
   100%{opacity:0;transform:translate(calc(-50% + var(--dx,0px)), calc(-50% + var(--dy,-30px) + 10px)) scale(calc(var(--s,1)*.72)) rotate(var(--rot,0deg))}}
 
-/* the heart button itself confirms with a squash-and-pop */
-@keyframes actPop{0%{transform:scale(1)}30%{transform:scale(.72)}62%{transform:scale(1.28)}100%{transform:scale(1)}}
-.act.pop svg{animation:actPop .42s cubic-bezier(.3,1.5,.4,1);}
-
-.post-acts{display:flex;gap:4px;padding:10px 20px 0 13px;}
-.act{background:none;border:0;cursor:pointer;padding:5px 6px;color:var(--ink);
-  display:grid;place-items:center;}
-.act svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:1.5;
-  stroke-linecap:round;stroke-linejoin:round;transition:transform .2s cubic-bezier(.3,1.4,.4,1);}
-.act:hover svg{transform:scale(1.08);}
-.act.on{color:var(--heart);}
-.act.on svg{fill:currentColor;}
-.act:focus-visible{outline:2px solid var(--ink);outline-offset:2px;border-radius:8px;}
-
-.post-likes{padding:6px 22px 0;font-size:12px;font-weight:500;color:var(--ink);}
-.post-cap{padding:4px 22px 0;font-family:var(--mono);font-size:12px;line-height:1.55;
-  color:var(--ink);margin:0;}
-/* IG rule: username and caption share size, case, and color — weight
-   500 vs 400 is the only contrast, separated by a real word-space */
-.post-cap b{font-weight:500;}
-.post-when{padding:12px 22px 0;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);}
-
-.post-cmts{padding:12px 22px 0;}
-.post-cmts+.post-when{padding-top:4px;}
-.post-cmt-more{background:none;border:0;padding:9px 0 0;cursor:pointer;font-family:var(--mono);
-  font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);}
-.post-cmt-more:hover{color:var(--ink);}
-
-/* the You tab shows your own strips as a grid, the way a profile should */
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;margin-top:14px;}
-.grid button{aspect-ratio:3/4;background:var(--paper);border:0;padding:0;cursor:pointer;overflow:hidden;}
-.grid img{width:100%;height:100%;object-fit:cover;display:block;}
-.grid button:focus-visible{outline:2px solid var(--ink);outline-offset:-2px;}
 
 /* ── NAV ───────────────────────────────────────────────── */
 .nav{position:absolute;left:50%;transform:translateX(-50%);bottom:calc(var(--safe) + var(--nav-gap));z-index:800;
@@ -1192,6 +1132,21 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
   </section>
 
   <!-- post a strip -->
+  <!-- one strip, taken off the wall -->
+  <div class="scrim" id="sv-scrim"></div>
+  <section class="sheet setsheet svsheet" id="stripview" aria-hidden="true" role="dialog" aria-label="Strip">
+    <div class="grab"></div>
+    <img id="sv-img" alt="">
+    <div class="sheet-head">
+      <div><h2 id="sv-name">Booth</h2><span class="hood" id="sv-meta"></span></div>
+    </div>
+    <p class="sv-cap" id="sv-cap" hidden></p>
+    <div class="srow">
+      <button class="go go-ghost" id="sv-del">Delete</button>
+      <button class="go" id="sv-goto">View booth</button>
+    </div>
+  </section>
+
   <div class="scrim" id="compose-scrim"></div>
   <section class="compose" id="compose" aria-hidden="true">
     <div class="grab"></div>
@@ -3411,34 +3366,55 @@ function norm(s){
   return s;
 }
 
-function stripCard(s){
-  norm(s);
-  const key  = `${s.booth.id}:${s.i}`;
-  return `<article class="post">
-    <header class="post-head">
-      <span class="post-av me"><svg viewBox="6.4 2.4 36.5 49"><use href="#booth-shape" x="2" y="2" width="48" height="52"/></svg></span>
-      <span class="post-who">
-        <button class="post-by" data-goto="${s.booth.id}">${s.booth.name}</button>
-        <span class="post-at">${s.booth.hood}${s.date ? ` · ${s.date}` : ''}</span>
-      </span>
-      <span class="post-more">
-        <button class="post-dots" data-menu="${key}" aria-haspopup="menu" aria-expanded="false" aria-label="Strip options">
-          <svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="19" cy="12" r="1.7"/></svg>
-        </button>
-        <div class="post-menu" role="menu" data-menufor="${key}">
-          <button role="menuitem" data-goto="${s.booth.id}">View booth</button>
-          <button role="menuitem" class="danger" data-del="${key}">Delete strip</button>
-        </div>
-      </span>
-    </header>
-
-    <div class="post-img">
-      <img src="${s.src}" alt="Photo strip from ${s.booth.name}">
-    </div>
-
-    ${s.caption ? `<p class="post-cap">${esc(s.caption)}</p>` : ''}
-  </article>`;
+/* the viewer: tap a strip on the wall to take it down */
+const svsheet = document.getElementById('stripview');
+const svscrim = document.getElementById('sv-scrim');
+let svKey = null;
+function openStripView(key){
+  const [bid, idx] = key.split(':');
+  const b = BOOTHS.find(x => x.id === bid);
+  const st = b && b.strips[Number(idx)];
+  if(!st) return;
+  svKey = key;
+  const img = document.getElementById('sv-img');
+  img.src = st.src; img.alt = `Photo strip from ${b.name}`;
+  document.getElementById('sv-name').textContent = b.name;
+  document.getElementById('sv-meta').textContent =
+    st.date ? `${b.hood} \u00b7 ${st.date}` : b.hood;
+  const cap = document.getElementById('sv-cap');
+  cap.textContent = st.caption || ''; cap.hidden = !st.caption;
+  const del = document.getElementById('sv-del');
+  del.classList.remove('arm'); del.textContent = 'Delete';
+  svsheet.classList.add('open'); svscrim.classList.add('open');
+  svsheet.setAttribute('aria-hidden','false');
 }
+function closeStripView(){
+  svsheet.classList.remove('open'); svscrim.classList.remove('open');
+  svsheet.setAttribute('aria-hidden','true'); svKey = null;
+}
+svscrim.addEventListener('click', closeStripView);
+document.addEventListener('keydown', e => { if(e.key === 'Escape') closeStripView(); });
+document.getElementById('sv-goto').addEventListener('click', () => {
+  const bid = svKey && svKey.split(':')[0];
+  closeStripView();
+  if(bid) select(bid);
+});
+/* deleting is two taps, both inside the sheet: no confirm dialog,
+   just the button turning on you before it acts */
+document.getElementById('sv-del').addEventListener('click', e => {
+  const btn = e.currentTarget;
+  if(!btn.classList.contains('arm')){
+    btn.classList.add('arm'); btn.textContent = 'Tap again to delete';
+    return;
+  }
+  const [bid, idx] = svKey.split(':');
+  closeStripView();
+  deleteStrip(bid, Number(idx));
+});
+document.body.addEventListener('click', e => {
+  const v = e.target.closest('[data-view]');
+  if(v) openStripView(v.dataset.view);
+});
 
 
 /* ================================================================
@@ -3686,10 +3662,16 @@ document.getElementById('rep-block-yes').addEventListener('click', ()=>{
 document.getElementById('report-scrim').addEventListener('click', closeReport);
 
 function drawSocial(){
-  /* the library: only your strips, kept on your phone */
+  /* the wall: your strips hung as objects, nothing else */
   const mine = allStrips().filter(s => s.by === 'you');
+  const booths = new Set(mine.map(s => s.booth.id)).size;
+  document.querySelector('#panel-social .sub').textContent = mine.length
+    ? `${mine.length} strip${mine.length===1?'':'s'} \u00b7 ${booths} booth${booths===1?'':'s'}`
+    : 'your collection, booth by booth';
   document.getElementById('social-body').innerHTML = mine.length
-    ? mine.map(s=>stripCard(s)).join('')
+    ? `<div class="wall">${mine.map(s =>
+        `<button data-view="${s.booth.id}:${s.i}" aria-label="Strip from ${esc(s.booth.name)}"><img src="${s.src}" alt=""></button>`
+      ).join('')}</div>`
     : `<div class="empty tall">${stripGlyph()}<p>No strips yet.</p>
        <span>find a booth \u00b7 add your first strip</span></div>`;
 }
@@ -3700,10 +3682,10 @@ function drawProfile(){
     `Seattle \u00b7 ${been} visited \u00b7 ${saved.size} saved`;
   drawSaved();
   document.getElementById('profile-body').innerHTML = mine.length
-    ? `<div class="grid">${mine.map(s=>
-        `<button data-goto="${s.booth.id}"><img src="${s.src}" alt="Strip from ${s.booth.name}"></button>`
+    ? `<div class="wall">${mine.map(s=>
+        `<button data-view="${s.booth.id}:${s.i}" aria-label="Strip from ${esc(s.booth.name)}"><img src="${s.src}" alt=""></button>`
       ).join('')}</div>`
-    : `<div class="empty">${stripGlyph()}<p>You haven't posted a strip.</p>
+    : `<div class="empty">${stripGlyph()}<p>No strips yet.</p>
        <span>shoot one and it lands here</span></div>`;
 }
 document.body.addEventListener('click', e=>{
