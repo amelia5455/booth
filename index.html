@@ -498,12 +498,13 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
   border:1px solid var(--line);display:grid;place-items:center;color:var(--ink);}
 .post-av svg{height:22px;width:auto;display:block;}
 .post-who{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;}
-.post-by{font-size:13px;font-weight:500;color:var(--ink);}
-.post-at{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;
-  margin-top:3px;line-height:1.3;text-align:left;
-  background:none;border:0;padding:0;color:var(--ink-soft);cursor:pointer;
+.post-by{background:none;border:0;padding:0;font:inherit;font-size:13px;font-weight:500;
+  color:var(--ink);text-align:left;cursor:pointer;
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.post-at:hover{color:var(--ink);}
+.post-by:hover{text-decoration:underline;}
+.post-at{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;
+  margin-top:3px;line-height:1.3;text-align:left;color:var(--ink-soft);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .post-more{flex:0 0 auto;position:relative;}
 .post-dots{background:none;border:0;cursor:pointer;padding:8px 6px;color:var(--ink-soft);
   display:grid;place-items:center;align-self:center;}
@@ -1011,10 +1012,10 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
     </div>
   </section>
 
-  <!-- social: everyone's strips -->
+  <!-- strips: your library, kept private -->
   <section class="panel" id="panel-social" aria-hidden="true">
-    <h1>Social</h1>
-    <div class="sub">strips from the booths</div>
+    <h1>Strips</h1>
+    <div class="sub">your collection, booth by booth</div>
     <div id="social-body"></div>
   </section>
 
@@ -1084,11 +1085,6 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
         <div><div class="t">Your data</div>
           <div class="d">name, saves, and strips as a file</div></div>
         <button class="rowbtn" id="set-export">Download</button>
-      </div>
-      <div class="setrow">
-        <div style="flex:1"><div class="t">Blocked</div>
-          <div class="d" id="set-blocked-hint">no one yet</div>
-          <div id="set-blocked"></div></div>
       </div>
     </div>
 
@@ -1199,7 +1195,7 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
   <div class="scrim" id="compose-scrim"></div>
   <section class="compose" id="compose" aria-hidden="true">
     <div class="grab"></div>
-    <h2>Post a strip</h2>
+    <h2>Add a strip</h2>
 
     <label class="field">
       <span class="flabel">Which city</span>
@@ -1236,7 +1232,7 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
 
     <div class="crow">
       <button class="btn-ghost" id="c-cancel">Cancel</button>
-      <button class="btn-solid" id="c-post" disabled>Post</button>
+      <button class="btn-solid" id="c-post" disabled>Save</button>
     </div>
   </section>
 
@@ -1268,14 +1264,14 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
   </button>
   <button class="fab" id="fab">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13"/></svg>
-    Post
+    Add strip
   </button>
 
   <nav class="nav" role="tablist">
     <span class="nav-pill" aria-hidden="true"></span>
     <button class="tab" role="tab" data-tab="social" aria-selected="false">
       <span class="ico"><svg viewBox="0 0 24 24"><g transform="rotate(-6 12 12)"><rect x="6.4" y="3.4" width="11.2" height="17.2" rx="1.6"/><path d="M6.4 9.1h11.2M6.4 14.9h11.2"/></g></svg></span>
-      Social
+      Strips
     </button>
     <button class="tab" role="tab" data-tab="map" aria-selected="true">
       <span class="ico"><svg viewBox="0 0 24 24"><path d="M9 3.5 3 6v14.5l6-2.5 6 2.5 6-2.5V3.5l-6 2.5-6-2.5z"/><path d="M9 3.5v14.5M15 6v14.5"/></svg></span>
@@ -1542,11 +1538,10 @@ const CITIES = [
             'down'        you went, it was broken or gone
    note   : your opinion, not a description
    strips : photos shot there. Shape:
-            strips:[{ src:'...', date:'Jul 26', by:'you', caption:'',
-                      likes:0, liked:false, comments:[{by:'ren', text:'!!'}] }]
+            strips:[{ src:'...', date:'Jul 26', by:'you', caption:'' }]
             Drop the images in a /strips folder next to this file.
-            'by' drives the split: everything shows in Social,
-            only by:'you' shows in the You tab.
+            'by' drives the split: only by:'you' shows in the
+            Strips library and the You tab.
    ================================================================ */
 const BOOTHS = [
   { id:'bar-house', name:'Bar House', hood:'Fremont', venue:'bar',
@@ -3416,48 +3411,32 @@ function norm(s){
   return s;
 }
 
-function stripCard(s, showWho){
+function stripCard(s){
   norm(s);
   const key  = `${s.booth.id}:${s.i}`;
-  const mine = s.by === 'you';
   return `<article class="post">
     <header class="post-head">
-      <span class="post-av${mine ? ' me' : ''}"><svg viewBox="6.4 2.4 36.5 49"><use href="#booth-shape" x="2" y="2" width="48" height="52"/></svg></span>
+      <span class="post-av me"><svg viewBox="6.4 2.4 36.5 49"><use href="#booth-shape" x="2" y="2" width="48" height="52"/></svg></span>
       <span class="post-who">
-        <span class="post-by">${esc(showWho ? who(s.by) : 'you')}</span>
-        <button class="post-at" data-goto="${s.booth.id}">${s.booth.name} · ${s.booth.hood}</button>
+        <button class="post-by" data-goto="${s.booth.id}">${s.booth.name}</button>
+        <span class="post-at">${s.booth.hood}${s.date ? ` · ${s.date}` : ''}</span>
       </span>
       <span class="post-more">
-        <button class="post-dots" data-menu="${key}" aria-haspopup="menu" aria-expanded="false" aria-label="Post options">
+        <button class="post-dots" data-menu="${key}" aria-haspopup="menu" aria-expanded="false" aria-label="Strip options">
           <svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="19" cy="12" r="1.7"/></svg>
         </button>
         <div class="post-menu" role="menu" data-menufor="${key}">
           <button role="menuitem" data-goto="${s.booth.id}">View booth</button>
-          ${mine
-            ? `<button role="menuitem" class="danger" data-del="${key}">Delete post</button>`
-            : `<button role="menuitem" data-report="${key}">Report</button>
-               <button role="menuitem" data-block="${esc(s.by)}">Block ${esc(who(s.by))}</button>`}
+          <button role="menuitem" class="danger" data-del="${key}">Delete strip</button>
         </div>
       </span>
     </header>
 
-    <div class="post-img" data-liketap="${key}">
+    <div class="post-img">
       <img src="${s.src}" alt="Photo strip from ${s.booth.name}">
     </div>
 
-    <div class="post-acts">
-      <button class="act${s.liked?' on':''}" data-like="${key}" aria-pressed="${s.liked}" aria-label="Like">
-        <svg viewBox="0 0 24 24">${HEART}</svg></button>
-      <button class="act" data-focus="${key}" aria-label="Comment">
-        <svg viewBox="0 0 24 24">${BUBBLE}</svg></button>
-    </div>
-
-    ${s.likes ? `<div class="post-likes">${s.likes} like${s.likes===1?'':'s'}</div>` : ''}
-    ${s.caption ? `<p class="post-cap"><b>${esc(showWho ? who(s.by) : 'you')}</b> ${esc(s.caption)}</p>` : ''}
-    ${s.comments.length
-      ? `<div class="post-cmts"><button class="post-cmt-more" data-comments="${key}">View comments</button></div>`
-      : ''}
-    <div class="post-when">${s.date || ''}</div>
+    ${s.caption ? `<p class="post-cap">${esc(s.caption)}</p>` : ''}
   </article>`;
 }
 
@@ -3707,13 +3686,12 @@ document.getElementById('rep-block-yes').addEventListener('click', ()=>{
 document.getElementById('report-scrim').addEventListener('click', closeReport);
 
 function drawSocial(){
-  /* the feed you shaped: reported strips and blocked people stay out */
-  const all = allStrips().filter(s =>
-    !blocked.has(s.by) && !reported.has(`${s.booth.id}:${s.i}`));
-  document.getElementById('social-body').innerHTML = all.length
-    ? all.map(s=>stripCard(s,true)).join('')
-    : `<div class="empty tall">${stripGlyph()}<p>Nobody has posted a strip yet.</p>
-       <span>be the first \u00b7 hit post</span></div>`;
+  /* the library: only your strips, kept on your phone */
+  const mine = allStrips().filter(s => s.by === 'you');
+  document.getElementById('social-body').innerHTML = mine.length
+    ? mine.map(s=>stripCard(s)).join('')
+    : `<div class="empty tall">${stripGlyph()}<p>No strips yet.</p>
+       <span>find a booth \u00b7 add your first strip</span></div>`;
 }
 function drawProfile(){
   const mine = allStrips().filter(s => s.by === 'you');
@@ -4137,11 +4115,11 @@ function postStrip(){
   if(!b || !pendingSrc) return;
   const cap = (document.getElementById('c-cap').value || '').trim();
 
-  /* a failed post must cost nothing: the sheet stays open, the photo
+  /* a failed save must cost nothing: the sheet stays open, the photo
      and caption stay put, and the toast owns the bad news. Closing
      the sheet on failure would read as success and lose the strip. */
   if(netFails(cap)){
-    toast('Couldn\u2019t post. Your strip is still here. Try again.', true);
+    toast('Couldn\u2019t save. Your strip is still here. Try again.', true);
     return;
   }
 
@@ -4809,7 +4787,6 @@ function who(by){
   function openSettings(){
     $('set-phone').textContent=window.__mePhone||'+1 (206) 555-0134';
     $('set-delconfirm').hidden=true; $('set-del').hidden=false;
-    renderBlocked();
     lift(sheet);
   }
   function openEdit(){
@@ -4901,22 +4878,7 @@ function who(by){
   sheet.addEventListener('click',function(e){
     var t=e.target.closest('.tgl');
     if(t)t.setAttribute('aria-checked',String(t.getAttribute('aria-checked')!=='true'));
-    var u=e.target.closest('[data-unblock]');
-    if(u){
-      blocked.delete(u.dataset.unblock);
-      renderBlocked(); drawSocial();
-    }
   });
-
-  /* the block list lives where privacy lives; unblocking is one tap */
-  function renderBlocked(){
-    var names=(typeof blocked!=='undefined')?Array.from(blocked):[];
-    $('set-blocked-hint').style.display=names.length?'none':'';
-    $('set-blocked').innerHTML=names.map(function(n){
-      return '<div class="brow"><span class="bn">'+esc(who(n))+'</span>'+
-        '<button class="rowbtn" data-unblock="'+esc(n)+'">Unblock</button></div>';
-    }).join('');
-  }
 
   /* your data, actually downloadable: everything the prototype holds
      about you, minus the photos themselves (those stay on the phone) */

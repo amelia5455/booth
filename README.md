@@ -3,7 +3,7 @@
 Find a photobooth near you, wherever the night goes.
 
 A single-file prototype: analog photobooth map (Seattle-first, city by city),
-a strips feed, saves, and a full passwordless onboarding flow. Everything —
+a private strip library, saves, and a full passwordless onboarding flow. Everything —
 markup, styles, data, and logic — lives in `index.html`. There is no build
 step and no backend; open the file in a browser and it runs.
 
@@ -25,7 +25,7 @@ With it on, the flows can be walked deterministically:
 | name `ren` | name step | taken display name + suggestions |
 | name `offline` | name step | availability check network failure |
 | shift-tap "Use my location" | location step | the "Not here yet" uncovered-city state |
-| the word `offline` in a caption or comment | compose / comments | failed send that preserves the user's work |
+| the word `offline` in a caption | add-a-strip | failed save that preserves the user's work |
 
 The triggers are deliberately invisible in the UI — this table is their
 only documentation. Flip `DEMO` to `false` and the trigger codes, the
