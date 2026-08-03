@@ -3042,17 +3042,22 @@ const BOOTHS = [
 
 
 /* ================================================================
-   2. SAVED — in-memory only.
+   2. SAVED — kept on the device.
 
-   Running this from a file:// URL in your browser? Uncomment the two
-   localStorage lines below and saves survive a refresh. It's left off
-   by default because localStorage throws inside Claude's preview pane.
-   When you move to a backend, this Set is the only thing that changes.
+   localStorage, defensively: private browsing and full quotas fail
+   quietly and the app simply becomes session-only again. When a
+   backend lands, these helpers are the only thing that changes.
    ================================================================ */
-const saved = new Set(/* JSON.parse(localStorage.getItem('booth:saved') || '[]') */);
-function persist(){
-  // localStorage.setItem('booth:saved', JSON.stringify([...saved]));
+function lsGet(key, fallback){
+  try{ return JSON.parse(localStorage.getItem(key)) ?? fallback; }
+  catch(e){ return fallback; }
 }
+function lsSet(key, value){
+  try{ localStorage.setItem(key, JSON.stringify(value)); }catch(e){}
+}
+function lsDrop(key){ try{ localStorage.removeItem(key); }catch(e){} }
+const saved = new Set(lsGet('booth:saved', []));
+function persist(){ lsSet('booth:saved', [...saved]); }
 
 /* ================================================================
    3. MARKER — Amelia's drawing, one <symbol>, re-used per pin.
@@ -3243,6 +3248,15 @@ function stripGlyph(){
 function allStrips(){
   return BOOTHS.flatMap(b => b.strips.map((s,i) => ({...s, booth:b, i})));
 }
+/* the library survives a refresh: strips rehydrate into their booths */
+function persistStrips(){
+  lsSet('booth:strips', allStrips().filter(s => s.by === 'you')
+    .map(s => ({booth: s.booth.id, src: s.src, date: s.date, caption: s.caption})));
+}
+lsGet('booth:strips', []).forEach(r => {
+  const b = BOOTHS.find(x => x.id === r.booth);
+  if(b) b.strips.push({src: r.src, date: r.date, by: 'you', caption: r.caption});
+});
 /* the viewer: tap a strip on the wall to take it down */
 const svsheet = document.getElementById('stripview');
 const svscrim = document.getElementById('sv-scrim');
@@ -3367,6 +3381,7 @@ function deleteStrip(boothId, index){
   if(!b || !b.strips[index]) return;
   b.strips.splice(index, 1);
   // status is left alone on purpose: removing a photo doesn't un-verify a booth
+  persistStrips();
   render(); refeed();
 }
 
@@ -3694,6 +3709,7 @@ function postStrip(){
     by:      'you',
     caption: cap
   });
+  persistStrips();
 
   closeCompose();
   render();
@@ -4301,6 +4317,7 @@ document.getElementById('fab').addEventListener('click', ()=> openCompose());
     var name=pendingName||'Amelia', col=pendingColor||COLORS[0];
     window.__meName=name;
     window.__mePhone=($('ob-sentto').textContent||'').trim()||'+1 (206) 555-0134';
+    lsSet('booth:me', {name:name, phone:window.__mePhone, color:col});
     document.getElementById('profile-name').textContent=name;
     document.documentElement.style.setProperty('--me',col.base);
     document.documentElement.style.setProperty('--me-deep',col.deep);
@@ -4312,6 +4329,23 @@ document.getElementById('fab').addEventListener('click', ()=> openCompose());
     ob.addEventListener('transitionend',function(){ob.remove();},{once:true});
     setTimeout(function(){if(ob.parentNode)ob.remove();},700); /* reduced-motion fallback */
   });
+})();
+
+/* a returning device skips the door: identity restores and the
+   overlay never shows */
+(function(){
+  var me = lsGet('booth:me', null);
+  if(!me) return;
+  window.__meName = me.name;
+  window.__mePhone = me.phone;
+  document.getElementById('profile-name').textContent = me.name;
+  if(me.color){
+    document.documentElement.style.setProperty('--me', me.color.base);
+    document.documentElement.style.setProperty('--me-deep', me.color.deep);
+  }
+  drawSocial(); drawProfile();
+  var ob = document.getElementById('ob');
+  if(ob) ob.remove();
 })();
 
 
@@ -4380,6 +4414,7 @@ document.getElementById('fab').addEventListener('click', ()=> openCompose());
       b.addEventListener('click',function(){
         document.documentElement.style.setProperty('--me',c.base);
         document.documentElement.style.setProperty('--me-deep',c.deep);
+        var cme=lsGet('booth:me',null); if(cme){ cme.color=c; lsSet('booth:me',cme); }
         drawSws(); drawSocial(); drawProfile();
       });
       sws.appendChild(b);
@@ -4414,7 +4449,9 @@ document.getElementById('fab').addEventListener('click', ()=> openCompose());
   }
   function commit(){
     if(!okValue)return;
-    committed=okValue; window.__meName=okValue; okValue=null;
+    committed=okValue; window.__meName=okValue;
+    var sme=lsGet('booth:me',null); if(sme){ sme.name=okValue; lsSet('booth:me',sme); }
+    okValue=null;
     $('profile-name').textContent=committed;
     avail.classList.remove('bad'); avail.textContent='saved';
     drawSocial(); drawProfile();
@@ -4462,7 +4499,7 @@ document.getElementById('fab').addEventListener('click', ()=> openCompose());
     toast('Your data is downloading.');
   });
 
-  $('set-logout').addEventListener('click',function(){location.reload();});
+  $('set-logout').addEventListener('click',function(){lsDrop('booth:me'); location.reload();});
   $('set-del').addEventListener('click',function(){
     $('set-del').hidden=true; $('set-delconfirm').hidden=false;
   });
@@ -4470,7 +4507,7 @@ document.getElementById('fab').addEventListener('click', ()=> openCompose());
     $('set-delconfirm').hidden=true; $('set-del').hidden=false;
   });
   /* prototype: reload stands in for the server-side wipe */
-  $('set-del-yes').addEventListener('click',function(){location.reload();});
+  $('set-del-yes').addEventListener('click',function(){lsDrop('booth:me'); lsDrop('booth:saved'); lsDrop('booth:strips'); location.reload();});
 })();
 
 
