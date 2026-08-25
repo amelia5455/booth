@@ -1,6 +1,6 @@
 # Booth
 
-Find a photobooth near you, wherever the night goes.
+Find a photobooth near you, wherever you end up.
 
 A single-file prototype: analog photobooth map (Seattle-first, city by city),
 a private strip library, saves, and a full passwordless onboarding flow. Everything —
