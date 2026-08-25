@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Booth · Privacy</title>
+<link rel="stylesheet" href="vendor/fonts/fonts.css">
+<style>
+  :root{--ground:#E7E8DC;--ink:#1B1A16;--ink-soft:#6C6C60;--line:rgba(27,26,22,.12);
+    --serif:'Gloock',Times,serif;--mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;}
+  body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--mono);
+    font-size:14px;line-height:1.7;}
+  main{max-width:640px;margin:0 auto;padding:64px 24px 96px;}
+  h1{font-family:var(--serif);font-weight:400;font-size:38px;margin:0 0 6px;letter-spacing:-.01em;}
+  .sub{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:40px;}
+  h2{font-family:var(--serif);font-weight:400;font-size:22px;margin:36px 0 10px;}
+  p{margin:0 0 14px;}
+  a{color:var(--ink);}
+  .rule{height:1px;background:var(--line);margin:40px 0;}
+  .foot{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);}
+</style>
+</head>
+<body>
+<main>
+  <h1>Privacy</h1>
+  <div class="sub">Booth · effective August 5, 2026</div>
+
+  <p>Booth helps you find analog photobooths and keep a record of the
+  ones you visit. This page says exactly what the app stores and why.
+  There are no ads, no trackers, and your data is never sold.</p>
+
+  <h2>What Booth stores</h2>
+  <p><strong>Your phone number.</strong> Signing in is passwordless: we
+  text you a code. Your number is used to sign you in and never for
+  marketing. Codes are delivered by Twilio, which processes your number
+  solely to send that text.</p>
+  <p><strong>Your profile.</strong> A display name and a booth color,
+  chosen by you.</p>
+  <p><strong>Your saves and strips.</strong> Booths you save, and photo
+  strips you add — the photo, which booth it came from, the date, and an
+  optional caption. Strips are your private record; Booth has no feed,
+  no followers, and no public profiles.</p>
+
+  <h2>Where it lives</h2>
+  <p>Account data is stored with Supabase, our database and
+  authentication provider. Strip photos also keep a copy on your device
+  so your library works offline.</p>
+
+  <h2>Location</h2>
+  <p>The map opens on the city you choose. If a locate-me feature asks
+  for your location in a future version, your position will be read to
+  place you on the map and will not be stored on our servers.</p>
+
+  <h2>Deleting your account</h2>
+  <p>Settings &rarr; Delete account, inside the app. This permanently
+  deletes your profile, saves, strips, and photos, and the account
+  itself. There is no undo.</p>
+
+  <h2>Contact</h2>
+  <p>Questions: <a href="mailto:amelia.r.simpson123@gmail.com">amelia.r.simpson123@gmail.com</a></p>
+
+  <div class="rule"></div>
+  <div class="foot">Booth · made in Seattle</div>
+</main>
+</body>
+</html>
