@@ -398,13 +398,26 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
 
 /* saved overflows sideways: columns of three, swipe for more. The next
    column peeks in from the right edge so the gesture explains itself. */
-#saved-body.cols{display:flex;gap:24px;overflow-x:auto;-webkit-overflow-scrolling:touch;
-  scroll-snap-type:x mandatory;margin:0 -22px;padding:0 22px;
-  scrollbar-width:none;}
-#saved-body.cols::-webkit-scrollbar{display:none;}
-.saved-col{flex:0 0 86%;min-width:0;scroll-snap-align:start;}
-.saved-col:last-child{flex-basis:100%;scroll-snap-align:end;}
-.saved-col .row:last-child{border-bottom:0;}
+/* the saved-booths subpage: a full screen pushed over the tab,
+   same header rhythm as the panels */
+.subpage{position:absolute;inset:0;z-index:760;background:var(--ground);
+  display:flex;flex-direction:column;
+  padding:var(--content-top) 22px 0;
+  transform:translateX(100%);visibility:hidden;
+  transition:transform .32s cubic-bezier(.2,.8,.2,1), visibility .32s;}
+.subpage.open{transform:none;visibility:visible;}
+.subpage .subtop{display:flex;align-items:center;}
+.subpage .subback{display:grid;place-items:center;width:40px;height:40px;
+  background:none;border:1px solid var(--line);border-radius:100px;cursor:pointer;color:var(--ink);}
+.subpage .subback:focus-visible{outline:2px solid var(--ink);outline-offset:2px;}
+.subpage h1{font-family:var(--serif);font-weight:400;font-size:34px;
+  letter-spacing:-.01em;margin:18px 0 0;}
+.subpage .sub{font-size:9px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-soft);margin:8px 0 10px;}
+.subbody{flex:1 1 auto;overflow-y:auto;-webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+  padding-bottom:calc(var(--nav-h) + var(--safe) + var(--nav-gap) + 24px);}
+.subbody::-webkit-scrollbar{display:none;}
 
 .empty{padding:34px 0;text-align:center;}
 /* a whole-panel empty state centres in the space it owns; the section-level
@@ -910,6 +923,18 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
 
     <div class="shead"><h2>Your strips</h2></div>
     <div id="profile-body"></div>
+  </section>
+
+  <!-- every saved booth, one scrollable screen -->
+  <section class="subpage" id="savedall" aria-hidden="true">
+    <div class="subtop">
+      <button class="subback" id="savedall-back" aria-label="Back">
+        <svg viewBox="0 0 14 14" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9.4 2 4.2 7 9.4 12"/></svg>
+      </button>
+    </div>
+    <h1>Saved booths</h1>
+    <div class="sub" id="savedall-count"></div>
+    <div class="subbody" id="savedall-body"></div>
   </section>
 
   <!-- settings: the account, controllable -->
@@ -3168,7 +3193,7 @@ function closeSheet(){
     document.getElementById('ab-open').classList.add('show');
 }
 map.on('click', ()=>{ closeSheet(); toggleCitySheet(false); creditEl.classList.remove('open'); });
-document.addEventListener('keydown', e=>{ if(e.key==='Escape'){ closeSheet(); toggleCitySheet(false); closeCompose(); showTab('map'); }});
+document.addEventListener('keydown', e=>{ if(e.key==='Escape'){ closeSheet(); toggleCitySheet(false); closeCompose(); closeSavedAll(); showTab('map'); }});
 
 /* save toggle */
 document.getElementById('s-save').addEventListener('click', ()=>{
@@ -3194,35 +3219,42 @@ function boothRow(b, extra){
     </span>
   </button>`;
 }
-let savedExpanded = false;
 function drawSaved(){
   const list = BOOTHS.filter(b=>saved.has(b.id));
   const body = document.getElementById('saved-body');
   const more = document.getElementById('saved-more');
   more.hidden = list.length <= 3;
-  more.textContent = savedExpanded ? 'show less' : 'view all';
   if(!list.length){
-    body.classList.remove('cols');
     body.innerHTML = `<div class="empty"><p>Nothing saved yet.</p>
        <span>tap the bookmark on any booth</span></div>`;
     return;
   }
-  const rows = list.map(b=>boothRow(b, STATUS_TEXT[b.status].toLowerCase()));
-  if(list.length <= 3 || savedExpanded){
-    body.classList.remove('cols');
-    body.innerHTML = rows.join('');
-    return;
-  }
-  // more than three: columns of three, swiped horizontally
-  const cols = [];
-  for(let i = 0; i < rows.length; i += 3)
-    cols.push(`<div class="saved-col">${rows.slice(i, i+3).join('')}</div>`);
-  body.classList.add('cols');
-  body.innerHTML = cols.join('');
+  /* the section shows three; the rest live one tap away */
+  body.innerHTML = list.slice(0, 3)
+    .map(b=>boothRow(b, STATUS_TEXT[b.status].toLowerCase())).join('');
 }
-document.getElementById('saved-more').addEventListener('click', ()=>{
-  savedExpanded = !savedExpanded;
-  drawSaved();
+
+/* ── SAVED, ALL OF THEM — its own screen, slid in from the right ── */
+const savedall = document.getElementById('savedall');
+function openSavedAll(){
+  const list = BOOTHS.filter(b=>saved.has(b.id));
+  document.getElementById('savedall-count').textContent =
+    `${list.length} booth${list.length===1?'':'s'} saved`;
+  document.getElementById('savedall-body').innerHTML =
+    list.map(b=>boothRow(b, STATUS_TEXT[b.status].toLowerCase())).join('');
+  savedall.classList.add('open');
+  savedall.setAttribute('aria-hidden','false');
+}
+function closeSavedAll(){
+  savedall.classList.remove('open');
+  savedall.setAttribute('aria-hidden','true');
+}
+document.getElementById('saved-more').addEventListener('click', openSavedAll);
+document.getElementById('savedall-back').addEventListener('click', closeSavedAll);
+/* picking a booth closes the screen; the shared goto handler takes
+   it to the map from there */
+savedall.addEventListener('click', e=>{
+  if(e.target.closest('[data-goto]')) closeSavedAll();
 });
 function stripGlyph(){
   return `<div class="glyph"><svg viewBox="0 0 44 52" aria-hidden="true">
@@ -3426,6 +3458,7 @@ function movePill(animate = true){
 
 function showTab(name){
   tab = name;
+  closeSavedAll();
   document.querySelectorAll('.tab').forEach(t=>t.setAttribute('aria-selected', t.dataset.tab===name));
   ['social','profile'].forEach(p=>{
     const el = document.getElementById('panel-'+p);
