@@ -19,7 +19,7 @@
   --ink-soft:    #6C6C60;
   --stone:       #8E8E80;
   --paper:       #F3F3EA;
-  --saved:       #1B1A16;  /* saved booths draw in full ink, matching the filled bookmark */
+  --saved:       #8E8E80;  /* saved booths quiet down to stone; the unsaved field is ink */
   --line:        rgba(27,26,22,.12);
   /* the one hue the chrome is allowed: errors. The UI itself is ink
      on paper; user-chosen booth colors are the user's. Rust sits in
@@ -102,8 +102,8 @@ body{font-family:var(--mono);color:var(--ink);display:flex;align-items:center;ju
    below. Same language as the bookmark button, which also fills ink when on. */
 .booth-pin.is-saved, .row-mark svg.is-saved{color:var(--saved);}
 
-.s-working{color:var(--me-deep);}
-.s-unconfirmed{color:var(--stone);}
+.s-working{color:var(--ink);}
+.s-unconfirmed{color:#A5A598;}
 .s-down{color:#A5A598;}
 
 /* ── FILTERS ───────────────────────────────────────────── */
