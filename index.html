@@ -3089,7 +3089,7 @@ function miniSVG(b){
    4. MAP
    ================================================================ */
 const map = L.map('map',{zoomControl:false, attributionControl:false}).setView([47.6180,-122.3260],13.4);
-const tiles = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+const tiles = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png?key=cb1_28ym_1_6c0f2a23a0b3ec49df3dd39c',
   {maxZoom:19}).addTo(map);   // credit lives in the (i) button instead
 /* offline, the map quietly grays out tile by tile — say it once out
    loud instead. Once per session: a toast per failed tile is a siren. */
